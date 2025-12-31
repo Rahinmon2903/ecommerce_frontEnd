@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from '../Services/api';
+import ProductCard from '../Components/ProductCard';
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
@@ -13,7 +14,7 @@ const ProductList = () => {
         try {
           const response = await api.get('/products/getdata');
        
-          setProducts(response);
+          setProducts(response.data.products);
         } catch (error) {
           console.error('Error fetching products:', error);
         }
@@ -21,7 +22,10 @@ const ProductList = () => {
     return (
         <div>
             <h1>Product List</h1>
-            
+            {products.map((product) => (
+                <ProductCard key={product._id} product={product} />
+            ))}
+
            
             
         </div>
