@@ -6,6 +6,9 @@ const ProductDetials = () => {
     const {id} = useParams();
     const[product, setProduct] = useState(null);
 
+
+
+
     useEffect(()=>{
         fetchingDetials();
     },[id])
@@ -22,6 +25,18 @@ const ProductDetials = () => {
         }
        
     }
+
+        const addToCart=async () => {
+      try {
+        await api.post("/cart/add", { productId: id ,quantity:1}); 
+        alert("Product added to cart");
+        
+      } catch (error) {
+        console.error("Error adding product to cart:", error);
+        
+      }
+      
+    }
     
       if (!product) {
     return <p className="p-6">no product Found</p>;
@@ -36,6 +51,9 @@ const ProductDetials = () => {
       <p className="text-sm text-gray-500">
         Seller: {product.seller?.name}
       </p>
+      <button onClick={addToCart} className="mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+        Add to Cart
+      </button>
     </div>
         
             
