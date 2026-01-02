@@ -11,6 +11,8 @@ import CheckOut from './Pages/CheckOut';
 import BuyerDashboard from './Pages/BuyerDashboard';
 import SellerDashboard from './Pages/SellerDashboard';
 import Footer from './Components/Footer';
+import SellerOrders from './Pages/SellerOrders';
+import MyOrders from './Pages/MyOrders';
 
 const App = () => {
   return (
@@ -29,6 +31,8 @@ const App = () => {
          <Route path="/checkout" element={<CheckOut />} />
         <Route path="/buyer-dashboard" element={<BuyerDashboard />} />
         <Route path="/seller-dashboard" element={<SellerDashboard />} />
+        <Route path="/seller-Orders" element={<SellerOrders />} />
+        <Route path="/my-Orders" element={<MyOrders />} />
     </Routes>
     <div>
       <Footer/>
