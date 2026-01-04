@@ -2,9 +2,10 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../Services/api";
 
-const Login = () => {
+const RegisterBuyer = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
+    name: "",
     email: "",
     password: "",
   });
@@ -15,23 +16,13 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/auth/login", form);
-
-      localStorage.setItem(
-        "auth",
-        JSON.stringify({
-          token: res.data.token,
-          user: res.data.user,
-        })
-      );
-
-      if (res.data.user.role === "buyer") {
-        navigate("/buyer-dashboard");
-      } else {
-        navigate("/seller-dashboard");
-      }
+      await api.post("/auth/register", {
+        ...form,
+        role: "buyer",
+      });
+      navigate("/login");
     } catch (err) {
-      alert(err.response?.data?.message || "Login failed");
+      alert(err.response?.data?.message || err.message);
     }
   };
 
@@ -45,38 +36,49 @@ const Login = () => {
       />
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/50" />
+      <div className="absolute inset-0 bg-black/45" />
 
       {/* Centered content */}
       <div className="relative z-10 min-h-screen flex items-center justify-center px-6">
         <div className="w-full max-w-md text-center">
-    
+          {/* Brand */}
+          
+         
 
           {/* Heading */}
-          <h1 className="mt-8 text-[2.75rem] font-semibold leading-tight">
-            Sign in
+          <h1 className="mt-6 text-4xl font-semibold leading-tight">
+            Create account
           </h1>
 
           {/* Sub */}
-          <p className="mt-4 text-sm text-gray-300">
-            Welcome back
+          <p className="mt-3 text-sm text-gray-300">
+            One account. Faster checkout.
           </p>
 
           {/* Form */}
           <form
             onSubmit={handleSubmit}
-            className="mt-16 space-y-10 text-left"
+            className="mt-14 space-y-8 text-left"
           >
+            <input
+              name="name"
+              placeholder="Full name"
+              onChange={handleChange}
+              required
+              className="w-full bg-transparent border-b border-white/40
+                         pb-3 text-base placeholder-gray-300
+                         focus:outline-none focus:border-white transition"
+            />
+
             <input
               name="email"
               type="email"
               placeholder="Email address"
               onChange={handleChange}
               required
-              className="w-full bg-transparent border-b border-white/30
-                         pb-3 text-base placeholder-gray-400
-                         focus:outline-none focus:border-white
-                         transition-colors duration-200"
+              className="w-full bg-transparent border-b border-white/40
+                         pb-3 text-base placeholder-gray-300
+                         focus:outline-none focus:border-white transition"
             />
 
             <input
@@ -85,30 +87,26 @@ const Login = () => {
               placeholder="Password"
               onChange={handleChange}
               required
-              className="w-full bg-transparent border-b border-white/30
-                         pb-3 text-base placeholder-gray-400
-                         focus:outline-none focus:border-white
-                         transition-colors duration-200"
+              className="w-full bg-transparent border-b border-white/40
+                         pb-3 text-base placeholder-gray-300
+                         focus:outline-none focus:border-white transition"
             />
 
             <button
               type="submit"
-              className="w-full mt-10 py-3.5 bg-white text-black
+              className="w-full mt-8 py-3 bg-white text-black
                          text-sm font-medium tracking-wide
                          hover:opacity-90 transition"
             >
-              Sign in →
+              Continue →
             </button>
           </form>
 
           {/* Footer */}
-          <p className="mt-12 text-sm text-gray-300">
-            Don’t have an account?{" "}
-            <Link
-              to="/register-buyer"
-              className="underline hover:text-white transition"
-            >
-              Create one
+          <p className="mt-10 text-sm text-gray-300">
+            Already have an account?{" "}
+            <Link to="/login" className="underline">
+              Sign in
             </Link>
           </p>
         </div>
@@ -117,5 +115,6 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default RegisterBuyer;
+
 

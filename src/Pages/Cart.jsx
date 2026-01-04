@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import api from "../Services/api";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchCart();
@@ -20,16 +22,11 @@ const Cart = () => {
 
   const checkout = async () => {
     try {
-      setLoading(true);
-      await api.post("/orders/checkout");
-      alert("Order placed successfully");
-      setCart(null); 
+     navigate("/checkout");
     } catch (error) {
       console.log(error);
-      alert("Checkout failed");
-    } finally {
-      setLoading(false);
-    }
+      
+    } 
   };
 
   if (!cart || cart.products.length === 0) {
@@ -53,7 +50,7 @@ const Cart = () => {
         disabled={loading}
         style={{ marginTop: "20px" }}
       >
-        {loading ? "Placing order..." : "Checkout"}
+        Go to Checkout
       </button>
     </div>
   );
