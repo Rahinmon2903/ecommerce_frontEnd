@@ -8,7 +8,7 @@ import Cart from './Pages/Cart';
 import ProductList from './Pages/ProductList';
 import ProductDetials from './Pages/ProductDetials';
 import CheckOut from './Pages/CheckOut';
-import BuyerDashboard from './Pages/BuyerDashboard';
+
 import SellerDashboard from './Pages/SellerDashboard';
 import Footer from './Components/Footer';
 import SellerOrders from './Pages/SellerOrders';
@@ -34,10 +34,10 @@ const App = () => {
      <Route path="/products" element={<ProductList />} />
         <Route path="/products/:id" element={<ProductDetials />} />
          <Route path="/checkout" element={<ProtectedRoute role="buyer"><CheckOut /></ProtectedRoute>} />
-        <Route path="/buyer-dashboard" element={<BuyerDashboard />} />
+    
         <Route path="/seller-dashboard" element={<ProtectedRoute role="seller"><SellerDashboard /></ProtectedRoute>} />
         <Route path="/seller-Orders" element={<ProtectedRoute role="seller"><SellerOrders /></ProtectedRoute>} />
-        <Route path="/my-Orders" element={<ProtectedRoute role="buyer"></ProtectedRoute>} />
+        <Route path="/my-Orders" element={<ProtectedRoute role="buyer"><MyOrders /></ProtectedRoute>} />
         <Route path="/register-choice" element={<RegisterChoice />} />
     </Routes>
     <div>

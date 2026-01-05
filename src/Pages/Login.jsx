@@ -26,7 +26,7 @@ const Login = () => {
       );
 
       if (res.data.user.role === "buyer") {
-        navigate("/buyer-dashboard");
+        navigate("/products");
       } else {
         navigate("/seller-dashboard");
       }
