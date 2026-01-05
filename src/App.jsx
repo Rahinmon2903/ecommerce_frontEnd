@@ -16,6 +16,7 @@ import MyOrders from './Pages/MyOrders';
 import RegisterChoice from './Pages/RegisterChoice';
 import RegisterBuyer from './Pages/RegisterBuyer';
 import RegisterSeller from './Pages/RegisterSeller';
+import ProtectedRoute from './Components/ProtectedRoute';
 
 const App = () => {
   return (
@@ -29,14 +30,14 @@ const App = () => {
       <Route path='/login' element={<Login />} />
       <Route path='/register-buyer' element={<RegisterBuyer />} />
       <Route path='/register-seller' element={<RegisterSeller />} />
-      <Route path='/cart' element={<Cart />} />
+      <Route path='/cart' element={<ProtectedRoute role="buyer"><Cart /></ProtectedRoute>} />
      <Route path="/products" element={<ProductList />} />
         <Route path="/products/:id" element={<ProductDetials />} />
-         <Route path="/checkout" element={<CheckOut />} />
+         <Route path="/checkout" element={<ProtectedRoute role="buyer"><CheckOut /></ProtectedRoute>} />
         <Route path="/buyer-dashboard" element={<BuyerDashboard />} />
-        <Route path="/seller-dashboard" element={<SellerDashboard />} />
-        <Route path="/seller-Orders" element={<SellerOrders />} />
-        <Route path="/my-Orders" element={<MyOrders />} />
+        <Route path="/seller-dashboard" element={<ProtectedRoute role="seller"><SellerDashboard /></ProtectedRoute>} />
+        <Route path="/seller-Orders" element={<ProtectedRoute role="seller"><SellerOrders /></ProtectedRoute>} />
+        <Route path="/my-Orders" element={<ProtectedRoute role="buyer"></ProtectedRoute>} />
         <Route path="/register-choice" element={<RegisterChoice />} />
     </Routes>
     <div>
