@@ -21,6 +21,7 @@ const MyOrders = () => {
     }
   };
 
+  // LOADING
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center text-sm text-gray-500">
@@ -29,6 +30,7 @@ const MyOrders = () => {
     );
   }
 
+  //  NO ORDERS
   if (!orders.length) {
     return (
       <div className="min-h-screen flex items-center justify-center text-sm text-gray-500">
@@ -102,7 +104,31 @@ const MyOrders = () => {
                   ))}
               </div>
 
-              {/* ORDER ID (LOW EMPHASIS) */}
+              {/* SHIPPING ADDRESS */}
+              {order.shippingAddress && (
+                <div className="mt-5 text-sm text-gray-600">
+                  <p className="font-medium text-gray-700 mb-1">
+                    Shipping Address
+                  </p>
+
+                  <p>
+                    {order.shippingAddress.fullName}
+                  </p>
+
+                  <p>
+                    {order.shippingAddress.addressLine},{" "}
+                    {order.shippingAddress.city},{" "}
+                    {order.shippingAddress.state} -{" "}
+                    {order.shippingAddress.postalCode}
+                  </p>
+
+                  <p>
+                    Phone: {order.shippingAddress.phone}
+                  </p>
+                </div>
+              )}
+
+              {/* ORDER ID */}
               <p className="mt-4 text-xs text-gray-400">
                 Order ID: {order._id}
               </p>
@@ -115,4 +141,3 @@ const MyOrders = () => {
 };
 
 export default MyOrders;
-

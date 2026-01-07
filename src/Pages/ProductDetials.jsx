@@ -6,6 +6,10 @@ const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [wishLoading, setWishLoading] = useState(false);
+
+  const auth = JSON.parse(localStorage.getItem("auth"));
+  const isBuyer = auth?.user?.role === "buyer";
 
   useEffect(() => {
     fetchDetails();
@@ -31,8 +35,27 @@ const ProductDetails = () => {
       });
       alert("Product added to cart");
     } catch (error) {
-      console.error("Error adding product to cart:", error);
+      console.error(error);
       alert("Failed to add product");
+    }
+  };
+
+  //  ADD TO WISHLIST
+  const addToWishlist = async () => {
+    if (!auth) {
+      alert("Please login to use wishlist");
+      return;
+    }
+
+    try {
+      setWishLoading(true);
+      await api.post(`/wishlist/${id}`);
+      alert("Added to wishlist ❤️");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to add to wishlist");
+    } finally {
+      setWishLoading(false);
     }
   };
 
@@ -61,7 +84,7 @@ const ProductDetails = () => {
     <div className="bg-white min-h-screen">
       <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          
+
           {/* IMAGE */}
           <div className="bg-gray-50 rounded-lg p-8">
             <img
@@ -85,28 +108,44 @@ const ProductDetails = () => {
               ₹ {product.price}
             </p>
 
-            {/* DESCRIPTION WITH FALLBACK */}
             <p className="mt-6 text-sm text-gray-700 leading-relaxed">
               {product.description?.trim()
                 ? product.description
                 : (
                   <span className="text-gray-500 italic">
-                    No description has been provided for this product.
+                    No description provided.
                   </span>
                 )}
             </p>
 
-            {/* ADD TO CART */}
-            <button
-              onClick={addToCart}
-              className="mt-8 px-6 py-3 bg-black text-white
-                         text-sm font-medium rounded-lg
-                         hover:opacity-90 transition"
-            >
-              Add to cart
-            </button>
-          </div>
+            {/* ACTION BUTTONS */}
+            <div className="mt-8 flex gap-4">
 
+              <button
+                onClick={addToCart}
+                className="px-6 py-3 bg-black text-white
+                           text-sm font-medium rounded-lg
+                           hover:opacity-90 transition"
+              >
+                Add to cart
+              </button>
+
+              {/* WISHLIST BUTTON (BUYER ONLY) */}
+              {isBuyer && (
+                <button
+                  onClick={addToWishlist}
+                  disabled={wishLoading}
+                  className="px-6 py-3 border rounded-lg
+                             text-sm font-medium
+                             hover:bg-gray-50
+                             disabled:opacity-60 transition"
+                >
+                  {wishLoading ? "Adding…" : "❤️ Add to Wishlist"}
+                </button>
+              )}
+            </div>
+
+          </div>
         </div>
       </div>
     </div>
