@@ -39,17 +39,17 @@ const Cart = () => {
     }
   };
 
- const removeItem = async (productId) => {
-  setUpdatingId(productId);
-  try {
-    await api.delete(`/cart/remove/${productId}`);
-    fetchCart();
-  } catch (err) {
-    console.error(err);
-  } finally {
-    setUpdatingId(null);
-  }
-};
+  const removeItem = async (productId) => {
+    setUpdatingId(productId);
+    try {
+      await api.delete(`/cart/remove/${productId}`);
+      fetchCart();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setUpdatingId(null);
+    }
+  };
 
   if (loading) {
     return (
@@ -66,7 +66,7 @@ const Cart = () => {
           <h2 className="text-xl font-medium">Your cart is empty</h2>
           <Link
             to="/products"
-            className="inline-block mt-6 px-6 py-3 bg-black text-white rounded-md text-sm"
+            className="inline-block mt-6 px-6 py-3 bg-black text-white rounded-lg text-sm"
           >
             Browse products
           </Link>
@@ -78,108 +78,142 @@ const Cart = () => {
   const items = cart.products.filter((i) => i.productId);
 
   const total = items.reduce(
-    (sum, item) =>
-      sum + item.productId.price * item.quantity,
+    (sum, item) => sum + item.productId.price * item.quantity,
     0
   );
 
   return (
-    <div className="bg-white min-h-screen">
-      <div className="max-w-4xl mx-auto px-6 py-16">
+    <div className="bg-[#FAFAFA] min-h-screen">
+      <div className="max-w-5xl mx-auto px-6 py-14">
 
-        {/* Title */}
-        <h1 className="text-2xl font-medium mb-12">
-          Shopping cart
+        {/* TITLE */}
+        <h1 className="text-2xl font-semibold mb-10">
+          Shopping Cart
         </h1>
 
-        {/* Items */}
-        <div>
-          {items.map((item) => {
-            const disabled = updatingId === item.productId._id;
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
 
-            return (
-              <div
-                key={item.productId._id}
-                className="flex items-center justify-between border-b border-gray-200 py-6"
-              >
-                {/* Product */}
-                <div>
-                  <p className="font-medium">
-                    {item.productId.name}
-                  </p>
-                  <p className="text-sm text-gray-500 mt-1">
-                    ₹ {item.productId.price}
-                  </p>
-                </div>
+          {/* ITEMS */}
+          <div className="lg:col-span-2 space-y-6">
+            {items.map((item) => {
+              const product = item.productId;
+              const disabled = updatingId === product._id;
 
-                {/* Controls */}
-                <div className="flex items-center gap-6">
-                  {/* Quantity */}
-                  <div className="flex items-center gap-3">
-                    <button
-                      disabled={disabled || item.quantity === 1}
-                      onClick={() =>
-                        changeQuantity(item.productId._id, -1)
-                      }
-                      className="w-8 h-8 flex items-center justify-center
-                                 border border-gray-300 rounded-md text-sm
-                                 hover:bg-gray-50 disabled:opacity-40"
-                    >
-                      −
-                    </button>
+              const imageUrl =
+                product.images && product.images.length > 0
+                  ? product.images[0]
+                  : "https://via.placeholder.com/200x200?text=No+Image";
 
-                    <span className="w-6 text-center text-sm">
-                      {item.quantity}
-                    </span>
-
-                    <button
-                      disabled={disabled}
-                      onClick={() =>
-                        changeQuantity(item.productId._id, 1)
-                      }
-                      className="w-8 h-8 flex items-center justify-center
-                                 border border-gray-300 rounded-md text-sm
-                                 hover:bg-gray-50 disabled:opacity-40"
-                    >
-                      +
-                    </button>
+              return (
+                <div
+                  key={product._id}
+                  className="bg-white rounded-2xl
+                             shadow-[0_6px_20px_rgba(0,0,0,0.04)]
+                             p-6 flex gap-6"
+                >
+                  {/* IMAGE */}
+                  <div className="w-24 h-24 bg-gray-50 rounded-xl flex items-center justify-center">
+                    <img
+                      src={imageUrl}
+                      alt={product.name}
+                      className="max-w-full max-h-full object-contain"
+                    />
                   </div>
 
-                  {/* Remove */}
-                  <button
-                    disabled={disabled}
-                    onClick={() =>
-                      removeItem(item.productId._id)
-                    }
-                    className="text-sm text-gray-400 hover:text-gray-700 disabled:opacity-40"
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+                  {/* INFO */}
+                  <div className="flex-1">
+                    <p className="text-base font-medium text-gray-900 leading-snug">
+                      {product.name}
+                    </p>
 
-        {/* Total + CTA */}
-        <div className="mt-16">
-          <div className="flex items-center justify-between border-t pt-8">
-            <p className="text-lg font-medium">Total</p>
-            <p className="text-lg font-semibold">
-              ₹ {total}
-            </p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      ₹ {product.price}
+                    </p>
+
+                    {/* CONTROLS */}
+                    <div className="mt-4 flex items-center gap-4">
+                      <div className="flex items-center gap-3">
+                        <button
+                          disabled={disabled || item.quantity === 1}
+                          onClick={() =>
+                            changeQuantity(product._id, -1)
+                          }
+                          className="w-8 h-8 border rounded-md
+                                     text-sm hover:bg-gray-50
+                                     disabled:opacity-40"
+                        >
+                          −
+                        </button>
+
+                        <span className="w-6 text-center text-sm">
+                          {item.quantity}
+                        </span>
+
+                        <button
+                          disabled={disabled}
+                          onClick={() =>
+                            changeQuantity(product._id, 1)
+                          }
+                          className="w-8 h-8 border rounded-md
+                                     text-sm hover:bg-gray-50
+                                     disabled:opacity-40"
+                        >
+                          +
+                        </button>
+                      </div>
+
+                      <button
+                        disabled={disabled}
+                        onClick={() => removeItem(product._id)}
+                        className="text-sm text-gray-400 hover:text-gray-700"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* ITEM TOTAL */}
+                  <div className="text-right">
+                    <p className="text-lg font-semibold text-gray-900">
+                      ₹ {product.price * item.quantity}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
-          <button
-            onClick={() => navigate("/checkout")}
-            className="mt-8 w-full py-4 bg-black text-white
-                       text-sm font-medium rounded-lg
-                       hover:opacity-90 transition"
+          {/* SUMMARY */}
+          <div
+            className="bg-white rounded-2xl
+                       shadow-[0_10px_30px_rgba(0,0,0,0.06)]
+                       p-7 h-fit"
           >
-            Proceed to checkout
-          </button>
-        </div>
+            <h2 className="text-lg font-medium mb-6">
+              Order Summary
+            </h2>
 
+            <div className="flex justify-between text-sm text-gray-600">
+              <span>Items</span>
+              <span>{items.length}</span>
+            </div>
+
+            <div className="flex justify-between mt-3 text-base font-semibold">
+              <span>Total</span>
+              <span>₹ {total}</span>
+            </div>
+
+            <button
+              onClick={() => navigate("/checkout")}
+              className="mt-7 w-full py-3.5 bg-black text-white
+                         text-sm font-medium rounded-xl
+                         hover:opacity-90 active:scale-[0.99]
+                         transition"
+            >
+              Proceed to checkout
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
