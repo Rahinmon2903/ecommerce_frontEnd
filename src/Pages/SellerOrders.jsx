@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../Services/api";
 
 const SellerOrders = () => {
@@ -15,14 +15,14 @@ const SellerOrders = () => {
     try {
       const response = await api.get("/orders/seller-orders");
 
+      // SAFELY HANDLE BACKEND RESPONSE
       const data = response.data;
-
       let ordersArray = [];
 
-      if (Array.isArray(data.orders)) {
-        ordersArray = data.orders;
-      } else if (Array.isArray(data.SellerOrders)) {
+      if (Array.isArray(data.SellerOrders)) {
         ordersArray = data.SellerOrders;
+      } else if (Array.isArray(data.orders)) {
+        ordersArray = data.orders;
       }
 
       setOrders(ordersArray);
@@ -34,7 +34,19 @@ const SellerOrders = () => {
     }
   };
 
-  //  LOADING
+  //  UPDATE ORDER STATUS
+  const updateStatus = async (orderId, status) => {
+    try {
+      await api.put(`/orders/update-status/${orderId}`, {
+        status,
+      });
+
+      fetchSellerOrders(); // refresh UI
+    } catch (error) {
+      alert(error.response?.data?.message || "Failed to update status");
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center text-sm text-gray-500">
@@ -43,7 +55,6 @@ const SellerOrders = () => {
     );
   }
 
-  // NO ORDERS
   if (!orders.length) {
     return (
       <div className="min-h-screen flex items-center justify-center text-sm text-gray-500">
@@ -76,36 +87,53 @@ const SellerOrders = () => {
                   </p>
                 </div>
 
-                <div className="flex items-center gap-6">
-                  <p className="text-sm">
-                    <span className="text-gray-500">Total:</span>{" "}
-                    <span className="font-medium">
-                      ₹ {order.totalAmount}
-                    </span>
-                  </p>
-
-                  <span
-                    className={`px-3 py-1 text-xs rounded-full font-medium
-                      ${
-                        order.status === "paid"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-gray-100 text-gray-600"
-                      }`}
-                  >
-                    {order.status}
+                <div className="text-sm">
+                  <span className="text-gray-500">Total:</span>{" "}
+                  <span className="font-medium">
+                    ₹ {order.totalAmount}
                   </span>
                 </div>
               </div>
 
-              {/* BUYER INFO */}
-              <div className="mb-4 text-sm text-gray-700">
+              {/* STATUS CONTROL */}
+              <div className="flex items-center gap-4 mb-6">
+                <span className="text-sm text-gray-600">
+                  Current status:
+                  <span className="ml-1 font-medium">
+                    {order.status}
+                  </span>
+                </span>
+
+                <select
+                  value={order.status}
+                  onChange={(e) =>
+                    updateStatus(order._id, e.target.value)
+                  }
+                  className="border px-3 py-1 text-sm"
+                >
+                  <option value="pending">Pending</option>
+                  <option value="shipped">Shipped</option>
+                  <option value="delivered">Delivered</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+              </div>
+
+              {/* SHIPPING ADDRESS */}
+              <div className="mb-6 text-sm text-gray-700">
+                <h4 className="font-medium mb-1">
+                  Shipping Address
+                </h4>
+                <p>{order.shippingAddress?.fullName}</p>
+                <p>{order.shippingAddress?.phone}</p>
                 <p>
-                  <strong>Buyer:</strong>{" "}
-                  {order.buyer?.name} ({order.buyer?.email})
+                  {order.shippingAddress?.addressLine},{" "}
+                  {order.shippingAddress?.city},{" "}
+                  {order.shippingAddress?.state} –{" "}
+                  {order.shippingAddress?.postalCode}
                 </p>
               </div>
 
-              {/* PRODUCTS (ONLY SELLER PRODUCTS) */}
+              {/* PRODUCTS */}
               <div className="divide-y">
                 {order.products
                   ?.filter(
@@ -116,42 +144,17 @@ const SellerOrders = () => {
                   .map((item) => (
                     <div
                       key={item.productId._id}
-                      className="flex items-center justify-between py-4 text-sm"
+                      className="flex items-center justify-between py-3 text-sm"
                     >
-                      <p className="text-gray-800 max-w-[70%]">
+                      <p className="text-gray-800">
                         {item.productId.name}
                       </p>
-
                       <p className="text-gray-600">
                         Qty: {item.quantity}
                       </p>
                     </div>
                   ))}
               </div>
-
-              {/* SHIPPING ADDRESS */}
-              {order.shippingAddress && (
-                <div className="mt-5 text-sm text-gray-600">
-                  <p className="font-medium text-gray-700 mb-1">
-                    Shipping Address
-                  </p>
-
-                  <p>
-                    {order.shippingAddress.fullName}
-                  </p>
-
-                  <p>
-                    {order.shippingAddress.addressLine},{" "}
-                    {order.shippingAddress.city},{" "}
-                    {order.shippingAddress.state} -{" "}
-                    {order.shippingAddress.postalCode}
-                  </p>
-
-                  <p>
-                    Phone: {order.shippingAddress.phone}
-                  </p>
-                </div>
-              )}
 
               {/* ORDER ID */}
               <p className="mt-4 text-xs text-gray-400">
@@ -166,4 +169,5 @@ const SellerOrders = () => {
 };
 
 export default SellerOrders;
+
 
