@@ -3,7 +3,7 @@ import api from "../Services/api";
 
 const SellerOrders = () => {
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const sellerId = JSON.parse(localStorage.getItem("auth"))?.user?.id;
 
@@ -13,19 +13,35 @@ const SellerOrders = () => {
 
   const fetchSellerOrders = async () => {
     try {
-      setLoading(true);
       const response = await api.get("/orders/seller-orders");
-      setOrders(response.data.orders);
+
+      // ✅ SAFELY extract orders
+      const data = response.data;
+
+      let ordersArray = [];
+
+      if (Array.isArray(data.orders)) {
+        ordersArray = data.orders;
+      } else if (Array.isArray(data.SellerOrders)) {
+        ordersArray = data.SellerOrders;
+      } else {
+        ordersArray = [];
+      }
+
+      setOrders(ordersArray);
     } catch (error) {
-      console.log(error);
+      console.error("Failed to fetch seller orders", error);
+      setOrders([]);
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading) return <p>Loading seller orders...</p>;
+  if (loading) {
+    return <p>Loading seller orders...</p>;
+  }
 
-  if (orders.length === 0) {
+  if (!Array.isArray(orders) || orders.length === 0) {
     return <p>No orders for your products yet</p>;
   }
 
@@ -43,21 +59,28 @@ const SellerOrders = () => {
           }}
         >
           <p><strong>Order ID:</strong> {order._id}</p>
-          <p><strong>Buyer:</strong> {order.buyer.name} ({order.buyer.email})</p>
-          <p><strong>Status:</strong> {order.status}</p>
-          <p><strong>Order Total:</strong> ₹ {order.totalAmount}</p>
+
           <p>
-            <strong>Ordered on:</strong>{" "}
+            <strong>Buyer:</strong>{" "}
+            {order.buyer?.name} ({order.buyer?.email})
+          </p>
+
+          <p><strong>Status:</strong> {order.status}</p>
+          <p><strong>Total:</strong> ₹ {order.totalAmount}</p>
+
+          <p>
+            <strong>Date:</strong>{" "}
             {new Date(order.createdAt).toLocaleDateString()}
           </p>
 
           <hr />
 
-          <h4>Your Products in this Order:</h4>
+          <h4>Your Products</h4>
 
           {order.products
-            .filter(
+            ?.filter(
               (item) =>
+                item.productId &&
                 item.productId.seller === sellerId
             )
             .map((item) => (
