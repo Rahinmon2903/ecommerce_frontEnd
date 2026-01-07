@@ -19,6 +19,7 @@ import RegisterSeller from "./Pages/RegisterSeller";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import ForgotPassword from "./Pages/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword";
+import Wishlist from "./Pages/Wishlist";
 
 const App = () => {
   return (
@@ -47,6 +48,14 @@ const App = () => {
             element={
               <ProtectedRoute role="buyer">
                 <CheckOut />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/wishlist"
+            element={
+              <ProtectedRoute role="buyer">
+                <Wishlist />
               </ProtectedRoute>
             }
           />

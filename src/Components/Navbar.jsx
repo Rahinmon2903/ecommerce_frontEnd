@@ -17,7 +17,6 @@ const Navbar = () => {
   return (
     <header className="bg-white border-b">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        
         {/* Logo */}
         <Link to="/" aria-label="Home" className="flex items-center">
           <Logo size={90} />
@@ -25,7 +24,6 @@ const Navbar = () => {
 
         {/* Navigation */}
         <nav className="flex items-center gap-6 text-sm">
-          
           {/* NOT LOGGED IN */}
           {!auth && (
             <>
@@ -60,6 +58,12 @@ const Navbar = () => {
                 className="text-gray-600 hover:text-black transition"
               >
                 My Orders
+              </Link>
+              <Link
+                to="/wishlist"
+                className="text-gray-600 hover:text-black transition"
+              >
+                Wishlist
               </Link>
 
               <button
@@ -96,7 +100,6 @@ const Navbar = () => {
               </button>
             </>
           )}
-
         </nav>
       </div>
     </header>
@@ -104,4 +107,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
