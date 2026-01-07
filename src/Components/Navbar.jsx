@@ -1,13 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "./Logo";
 
 const Navbar = () => {
   const navigate = useNavigate();
 
-  // Read auth from localStorage
   const auth = JSON.parse(localStorage.getItem("auth"));
-  const user = auth?.user;
-  const role = user?.role;
+  const role = auth?.user?.role;
 
   const handleLogout = () => {
     localStorage.removeItem("auth");
@@ -17,13 +14,20 @@ const Navbar = () => {
   return (
     <header className="bg-white border-b">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <Link to="/" aria-label="Home" className="flex items-center">
-          <Logo size={90} />
+        
+        {/* BRAND (TEXT LOGO) */}
+        <Link
+          to="/"
+          className="text-lg font-semibold tracking-tight text-black"
+        >
+          Dream<span className="text-gray-400">It</span>
+          <span className="mx-1 text-gray-300">·</span>
+          Own<span className="text-gray-400">It</span>
         </Link>
 
-        {/* Navigation */}
+        {/* NAVIGATION */}
         <nav className="flex items-center gap-6 text-sm">
+          
           {/* NOT LOGGED IN */}
           {!auth && (
             <>
@@ -35,8 +39,9 @@ const Navbar = () => {
               </Link>
 
               <Link
-                to="/register-choice"
-                className="text-black font-medium hover:opacity-70 transition"
+                to="/"
+                className="px-4 py-2 rounded-md bg-black text-white
+                           text-sm font-medium hover:opacity-90 transition"
               >
                 Create account
               </Link>
@@ -46,23 +51,16 @@ const Navbar = () => {
           {/* BUYER */}
           {auth && role === "buyer" && (
             <>
-              <Link
-                to="/cart"
-                className="text-gray-600 hover:text-black transition"
-              >
+              <Link className="nav-link" to="/products">
+                Products
+              </Link>
+              <Link className="nav-link" to="/cart">
                 Cart
               </Link>
-
-              <Link
-                to="/my-orders"
-                className="text-gray-600 hover:text-black transition"
-              >
-                My Orders
+              <Link className="nav-link" to="/my-orders">
+                Orders
               </Link>
-              <Link
-                to="/wishlist"
-                className="text-gray-600 hover:text-black transition"
-              >
+              <Link className="nav-link" to="/wishlist">
                 Wishlist
               </Link>
 
@@ -78,23 +76,13 @@ const Navbar = () => {
           {/* SELLER */}
           {auth && role === "seller" && (
             <>
-              <Link
-                to="/seller-dashboard"
-                className="text-gray-600 hover:text-black transition"
-              >
+              <Link className="nav-link" to="/seller-dashboard">
                 Dashboard
               </Link>
-
-              <Link
-                to="/seller-orders"
-                className="text-gray-600 hover:text-black transition"
-              >
+              <Link className="nav-link" to="/seller-orders">
                 Orders
               </Link>
-              <Link
-                to="/seller-stats"
-                className="text-gray-600 hover:text-black transition"
-              >
+              <Link className="nav-link" to="/seller-stats">
                 Analytics
               </Link>
 

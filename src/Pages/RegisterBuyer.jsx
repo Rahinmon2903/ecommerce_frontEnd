@@ -27,89 +27,78 @@ const RegisterBuyer = () => {
   };
 
   return (
-    <div className="min-h-screen relative text-white">
-      {/* Background */}
-      <img
-        src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f"
-        alt="Background"
-        className="absolute inset-0 w-full h-full object-cover"
-      />
+    <div className="min-h-screen flex items-center justify-center bg-[#F5F5F5] px-4">
+      <div className="w-full max-w-sm bg-white rounded-lg p-7">
+        
+        {/* Header */}
+        <h1 className="text-xl font-medium text-gray-900">
+          Create account
+        </h1>
+        <p className="mt-1.5 text-sm text-gray-500">
+          Buyer registration
+        </p>
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/45" />
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="mt-9 space-y-7">
+          <input
+            name="name"
+            placeholder="Full name"
+            onChange={handleChange}
+            required
+            className="w-full border-b border-gray-300 bg-transparent
+                       py-2.5 text-sm text-gray-900
+                       placeholder-gray-400
+                       focus:outline-none
+                       focus:border-gray-500
+                       transition"
+          />
 
-      {/* Centered content */}
-      <div className="relative z-10 min-h-screen flex items-center justify-center px-6">
-        <div className="w-full max-w-md text-center">
-          {/* Brand */}
-          
-         
+          <input
+            name="email"
+            type="email"
+            placeholder="Email address"
+            onChange={handleChange}
+            required
+            className="w-full border-b border-gray-300 bg-transparent
+                       py-2.5 text-sm text-gray-900
+                       placeholder-gray-400
+                       focus:outline-none
+                       focus:border-gray-500
+                       transition"
+          />
 
-          {/* Heading */}
-          <h1 className="mt-6 text-4xl font-semibold leading-tight">
-            Create account
-          </h1>
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            onChange={handleChange}
+            required
+            className="w-full border-b border-gray-300 bg-transparent
+                       py-2.5 text-sm text-gray-900
+                       placeholder-gray-400
+                       focus:outline-none
+                       focus:border-gray-500
+                       transition"
+          />
 
-          {/* Sub */}
-          <p className="mt-3 text-sm text-gray-300">
-            One account. Faster checkout.
-          </p>
-
-          {/* Form */}
-          <form
-            onSubmit={handleSubmit}
-            className="mt-14 space-y-8 text-left"
+          <button
+            type="submit"
+            className="w-full mt-6 py-2.5 bg-black text-white
+                       text-sm font-medium rounded
+                       hover:opacity-90 active:scale-[0.99]
+                       transition"
           >
-            <input
-              name="name"
-              placeholder="Full name"
-              onChange={handleChange}
-              required
-              className="w-full bg-transparent border-b border-white/40
-                         pb-3 text-base placeholder-gray-300
-                         focus:outline-none focus:border-white transition"
-            />
+            Create account
+          </button>
+        </form>
 
-            <input
-              name="email"
-              type="email"
-              placeholder="Email address"
-              onChange={handleChange}
-              required
-              className="w-full bg-transparent border-b border-white/40
-                         pb-3 text-base placeholder-gray-300
-                         focus:outline-none focus:border-white transition"
-            />
-
-            <input
-              name="password"
-              type="password"
-              placeholder="Password"
-              onChange={handleChange}
-              required
-              className="w-full bg-transparent border-b border-white/40
-                         pb-3 text-base placeholder-gray-300
-                         focus:outline-none focus:border-white transition"
-            />
-
-            <button
-              type="submit"
-              className="w-full mt-8 py-3 bg-white text-black
-                         text-sm font-medium tracking-wide
-                         hover:opacity-90 transition"
-            >
-              Continue →
-            </button>
-          </form>
-
-          {/* Footer */}
-          <p className="mt-10 text-sm text-gray-300">
-            Already have an account?{" "}
-            <Link to="/login" className="underline">
-              Sign in
-            </Link>
-          </p>
-        </div>
+        {/* Footer */}
+        <p className="mt-7 text-center text-sm text-gray-500">
+          Already have an account?{" "}
+          <Link to="/login" className="underline text-gray-900">
+            Sign in
+          </Link>
+        </p>
       </div>
     </div>
   );
