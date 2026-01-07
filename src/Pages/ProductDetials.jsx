@@ -4,58 +4,69 @@ import api from "../Services/api";
 
 const ProductDetails = () => {
   const { id } = useParams();
+
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [wishLoading, setWishLoading] = useState(false);
 
+  //  REVIEW STATE
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState("");
+  const [reviewLoading, setReviewLoading] = useState(false);
+
+  //  AUTH INFO
   const auth = JSON.parse(localStorage.getItem("auth"));
+  const userId = auth?.user?.id;
   const isBuyer = auth?.user?.role === "buyer";
 
   useEffect(() => {
-    fetchDetails();
+    fetchProduct();
   }, [id]);
 
-  const fetchDetails = async () => {
+  const fetchProduct = async () => {
     try {
-      const response = await api.get(`/products/getById/${id}`);
-      setProduct(response.data.product);
+      const res = await api.get(`/products/getById/${id}`);
+      setProduct(res.data.product);
     } catch (error) {
-      console.error("Error fetching product:", error);
+      console.error(error);
       setProduct(null);
     } finally {
       setLoading(false);
     }
   };
 
-  const addToCart = async () => {
-    try {
-      await api.post("/cart/add", {
-        productId: id,
-        quantity: 1,
-      });
-      alert("Product added to cart");
-    } catch (error) {
-      console.error(error);
-      alert("Failed to add product");
-    }
-  };
+  //  CHECK DUPLICATE REVIEW
+  const alreadyReviewed = product?.reviews?.some(
+    (r) => r.user === userId
+  );
 
-  //  ADD TO WISHLIST
-  const addToWishlist = async () => {
-    if (!auth) {
-      alert("Please login to use wishlist");
+  //  SUBMIT REVIEW
+  const submitReview = async () => {
+    if (!comment) {
+      alert("Please write a review");
       return;
     }
 
     try {
-      setWishLoading(true);
-      await api.post(`/wishlist/${id}`);
-      alert("Added to wishlist ❤️");
+      setReviewLoading(true);
+
+      const res = await api.post(`/products/${id}/review`, {
+        rating,
+        comment,
+      });
+
+      setProduct({
+        ...product,
+        reviews: res.data.reviews,
+      });
+
+      setRating(5);
+      setComment("");
+
+      alert("Review added successfully");
     } catch (error) {
-      console.error(error);
-      alert("Failed to add to wishlist");
+      alert(error.response?.data?.message || "Failed to add review");
     } finally {
-      setWishLoading(false);
+      setReviewLoading(false);
     }
   };
 
@@ -83,6 +94,7 @@ const ProductDetails = () => {
   return (
     <div className="bg-white min-h-screen">
       <div className="max-w-6xl mx-auto px-6 py-12">
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
 
           {/* IMAGE */}
@@ -109,47 +121,85 @@ const ProductDetails = () => {
             </p>
 
             <p className="mt-6 text-sm text-gray-700 leading-relaxed">
-              {product.description?.trim()
-                ? product.description
-                : (
-                  <span className="text-gray-500 italic">
-                    No description provided.
-                  </span>
-                )}
+              {product.description}
             </p>
-
-            {/* ACTION BUTTONS */}
-            <div className="mt-8 flex gap-4">
-
-              <button
-                onClick={addToCart}
-                className="px-6 py-3 bg-black text-white
-                           text-sm font-medium rounded-lg
-                           hover:opacity-90 transition"
-              >
-                Add to cart
-              </button>
-
-              {/* WISHLIST BUTTON (BUYER ONLY) */}
-              {isBuyer && (
-                <button
-                  onClick={addToWishlist}
-                  disabled={wishLoading}
-                  className="px-6 py-3 border rounded-lg
-                             text-sm font-medium
-                             hover:bg-gray-50
-                             disabled:opacity-60 transition"
-                >
-                  {wishLoading ? "Adding…" : "❤️ Add to Wishlist"}
-                </button>
-              )}
-            </div>
-
           </div>
         </div>
+
+        {/* ================= REVIEWS ================= */}
+        <div className="mt-14">
+          <h2 className="text-lg font-medium mb-4">
+            Customer Reviews
+          </h2>
+
+          {/* BUYER MESSAGE */}
+          {isBuyer && alreadyReviewed && (
+            <p className="text-sm text-gray-500 mb-4">
+              You have already reviewed this product.
+            </p>
+          )}
+
+          {/* REVIEW FORM */}
+          {isBuyer && !alreadyReviewed && (
+            <div className="mb-6 space-y-3">
+              <select
+                value={rating}
+                onChange={(e) => setRating(e.target.value)}
+                className="border px-3 py-2"
+              >
+                {[5, 4, 3, 2, 1].map((r) => (
+                  <option key={r} value={r}>
+                    {r} ★
+                  </option>
+                ))}
+              </select>
+
+              <textarea
+                placeholder="Write your review"
+                className="w-full border px-3 py-2"
+                rows={3}
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
+
+              <button
+                onClick={submitReview}
+                disabled={reviewLoading}
+                className="px-5 py-2 bg-black text-white text-sm rounded disabled:opacity-60"
+              >
+                {reviewLoading ? "Submitting…" : "Submit Review"}
+              </button>
+            </div>
+          )}
+
+          {/* REVIEW LIST */}
+          {product.reviews && product.reviews.length > 0 ? (
+            <div className="space-y-4">
+              {product.reviews.map((review, index) => (
+                <div
+                  key={index}
+                  className="border-b pb-3"
+                >
+                  <p className="font-medium">
+                    {review.name} — {review.rating} ★
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {review.comment}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-gray-500">
+              No reviews yet
+            </p>
+          )}
+        </div>
+
       </div>
     </div>
   );
 };
 
 export default ProductDetails;
+
