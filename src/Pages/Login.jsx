@@ -50,23 +50,16 @@ const Login = () => {
       {/* Centered content */}
       <div className="relative z-10 min-h-screen flex items-center justify-center px-6">
         <div className="w-full max-w-md text-center">
-    
-
           {/* Heading */}
           <h1 className="mt-8 text-[2.75rem] font-semibold leading-tight">
             Sign in
           </h1>
 
           {/* Sub */}
-          <p className="mt-4 text-sm text-gray-300">
-            Welcome back
-          </p>
+          <p className="mt-4 text-sm text-gray-300">Welcome back</p>
 
           {/* Form */}
-          <form
-            onSubmit={handleSubmit}
-            className="mt-16 space-y-10 text-left"
-          >
+          <form onSubmit={handleSubmit} className="mt-16 space-y-10 text-left">
             <input
               name="email"
               type="email"
@@ -90,6 +83,14 @@ const Login = () => {
                          focus:outline-none focus:border-white
                          transition-colors duration-200"
             />
+            <div className="text-right">
+              <Link
+                to="/forgot-password"
+                className="text-sm text-gray-300 hover:text-white underline"
+              >
+                Forgot password?
+              </Link>
+            </div>
 
             <button
               type="submit"
@@ -118,4 +119,3 @@ const Login = () => {
 };
 
 export default Login;
-

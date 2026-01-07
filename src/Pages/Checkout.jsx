@@ -5,6 +5,16 @@ const CheckOut = () => {
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  //  SHIPPING ADDRESS STATE
+  const [shipping, setShipping] = useState({
+    fullName: "",
+    phone: "",
+    addressLine: "",
+    city: "",
+    state: "",
+    postalCode: "",
+  });
+
   useEffect(() => {
     fetchCart();
   }, []);
@@ -18,7 +28,7 @@ const CheckOut = () => {
     }
   };
 
-  // ✅ filter invalid products ONCE
+  // filter invalid products
   const items = useMemo(() => {
     if (!cart?.products) return [];
     return cart.products.filter((item) => item.productId);
@@ -32,19 +42,36 @@ const CheckOut = () => {
     );
   }, [items]);
 
+  //  HANDLE PAYMENT
   const handlePayment = async () => {
     try {
+      //  VALIDATE SHIPPING ADDRESS BEFORE CHECKOUT
+      if (
+        !shipping.fullName ||
+        !shipping.phone ||
+        !shipping.addressLine ||
+        !shipping.city ||
+        !shipping.state ||
+        !shipping.postalCode
+      ) {
+        alert("Please fill all shipping address fields");
+        return;
+      }
+
       setLoading(true);
 
-      // 1️⃣ Create MongoDB Order
-      const orderRes = await api.post("/orders/checkout");
+      // 1️ CREATE ORDER (WITH SHIPPING ADDRESS)
+      const orderRes = await api.post("/orders/checkout", {
+        shippingAddress: shipping,
+      });
+
       const orderId = orderRes.data.createOrder._id;
 
-      // 2️⃣ Create Razorpay Order
+      // 2️ CREATE RAZORPAY ORDER
       const paymentRes = await api.post("/payment/create", { orderId });
       const { razorpayOrder, key } = paymentRes.data;
 
-      // 3️⃣ Open Razorpay
+      // 3️ OPEN RAZORPAY
       const options = {
         key,
         amount: razorpayOrder.amount,
@@ -68,6 +95,7 @@ const CheckOut = () => {
 
       const rzp = new window.Razorpay(options);
       rzp.open();
+
     } catch (error) {
       console.error("Payment failed:", error);
       alert("Payment failed");
@@ -76,7 +104,7 @@ const CheckOut = () => {
     }
   };
 
-  // 🟡 LOADING
+  // LOADING
   if (!cart) {
     return (
       <div className="min-h-screen flex items-center justify-center text-sm text-gray-500">
@@ -85,7 +113,7 @@ const CheckOut = () => {
     );
   }
 
-  // 🟡 EMPTY CART
+  // EMPTY CART
   if (items.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center text-sm text-gray-500">
@@ -98,17 +126,16 @@ const CheckOut = () => {
     <div className="bg-white min-h-screen">
       <div className="max-w-4xl mx-auto px-6 py-16">
 
-        {/* Title */}
-        <h1 className="text-2xl font-medium mb-12">
+        <h1 className="text-2xl font-medium mb-10">
           Checkout
         </h1>
 
-        {/* Items */}
+        {/* ITEMS */}
         <div className="space-y-6">
           {items.map((item) => (
             <div
               key={item._id}
-              className="flex items-center justify-between border-b border-gray-200 py-4"
+              className="flex items-center justify-between border-b py-4"
             >
               <div>
                 <p className="font-medium">
@@ -126,23 +153,84 @@ const CheckOut = () => {
           ))}
         </div>
 
-        {/* Total */}
+        {/* SHIPPING ADDRESS */}
+        <div className="mt-12 space-y-4">
+          <h2 className="text-lg font-medium">
+            Shipping Address
+          </h2>
+
+          <input
+            placeholder="Full Name"
+            className="w-full border px-4 py-2"
+            value={shipping.fullName}
+            onChange={(e) =>
+              setShipping({ ...shipping, fullName: e.target.value })
+            }
+          />
+
+          <input
+            placeholder="Phone Number"
+            className="w-full border px-4 py-2"
+            value={shipping.phone}
+            onChange={(e) =>
+              setShipping({ ...shipping, phone: e.target.value })
+            }
+          />
+
+          <input
+            placeholder="Address Line"
+            className="w-full border px-4 py-2"
+            value={shipping.addressLine}
+            onChange={(e) =>
+              setShipping({ ...shipping, addressLine: e.target.value })
+            }
+          />
+
+          <div className="grid grid-cols-2 gap-4">
+            <input
+              placeholder="City"
+              className="border px-4 py-2"
+              value={shipping.city}
+              onChange={(e) =>
+                setShipping({ ...shipping, city: e.target.value })
+              }
+            />
+
+            <input
+              placeholder="State"
+              className="border px-4 py-2"
+              value={shipping.state}
+              onChange={(e) =>
+                setShipping({ ...shipping, state: e.target.value })
+              }
+            />
+          </div>
+
+          <input
+            placeholder="Postal Code"
+            className="w-full border px-4 py-2"
+            value={shipping.postalCode}
+            onChange={(e) =>
+              setShipping({ ...shipping, postalCode: e.target.value })
+            }
+          />
+        </div>
+
+        {/* TOTAL */}
         <div className="flex items-center justify-between border-t pt-8 mt-10">
-          <p className="text-lg font-medium">
-            Total
-          </p>
+          <p className="text-lg font-medium">Total</p>
           <p className="text-lg font-semibold">
             ₹ {total}
           </p>
         </div>
 
-        {/* Pay Button */}
+        {/* PAY BUTTON */}
         <button
           onClick={handlePayment}
           disabled={loading}
-          className="mt-10 w-full py-4 bg-black text-white
+          className="mt-8 w-full py-4 bg-black text-white
                      text-sm font-medium rounded-lg
-                     hover:opacity-90 disabled:opacity-60 transition"
+                     hover:opacity-90 disabled:opacity-60"
         >
           {loading ? "Processing payment…" : "Pay now"}
         </button>
@@ -153,4 +241,3 @@ const CheckOut = () => {
 };
 
 export default CheckOut;
-
