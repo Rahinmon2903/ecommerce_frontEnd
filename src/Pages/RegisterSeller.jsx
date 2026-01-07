@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../Services/api";
+import AuthSlider from "../Components/AuthSlider";
 
 const RegisterSeller = () => {
   const navigate = useNavigate();
@@ -27,42 +28,36 @@ const RegisterSeller = () => {
   };
 
   return (
-    <div className="min-h-screen relative text-white">
-      {/* Background */}
-      <img
-        src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f"
-        alt="Background"
-        className="absolute inset-0 w-full h-full object-cover"
-      />
+    <div className="min-h-screen flex bg-[#F5F5F5]">
+      
+      {/* LEFT — SLIDER */}
+      <AuthSlider />
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/50" />
+      {/* RIGHT — FORM */}
+      <div className="w-full md:w-1/2 flex items-center justify-center px-6">
+        <div className="w-full max-w-sm bg-white rounded-lg p-7">
 
-      {/* Centered content */}
-      <div className="relative z-10 min-h-screen flex items-center justify-center px-6">
-        <div className="w-full max-w-md text-center">
-          {/* Heading */}
-          <h1 className="mt-6 text-4xl font-semibold leading-tight">
+          {/* Header */}
+          <h1 className="text-xl font-medium text-gray-900">
             Start selling
           </h1>
-
-          <p className="mt-3 text-sm text-gray-300">
-            Manage products, orders, and payouts
+          <p className="mt-1.5 text-sm text-gray-500">
+            Create your seller account
           </p>
 
           {/* Form */}
-          <form
-            onSubmit={handleSubmit}
-            className="mt-16 space-y-10 text-left"
-          >
+          <form onSubmit={handleSubmit} className="mt-9 space-y-7">
             <input
               name="name"
               placeholder="Business or seller name"
               onChange={handleChange}
               required
-              className="w-full bg-transparent border-b border-white/30
-                         pb-3 text-base placeholder-gray-400
-                         focus:outline-none focus:border-white transition"
+              className="w-full border-b border-gray-300 bg-transparent
+                         py-2.5 text-sm text-gray-900
+                         placeholder-gray-400
+                         focus:outline-none
+                         focus:border-gray-500
+                         transition"
             />
 
             <input
@@ -71,9 +66,12 @@ const RegisterSeller = () => {
               placeholder="Email address"
               onChange={handleChange}
               required
-              className="w-full bg-transparent border-b border-white/30
-                         pb-3 text-base placeholder-gray-400
-                         focus:outline-none focus:border-white transition"
+              className="w-full border-b border-gray-300 bg-transparent
+                         py-2.5 text-sm text-gray-900
+                         placeholder-gray-400
+                         focus:outline-none
+                         focus:border-gray-500
+                         transition"
             />
 
             <input
@@ -82,25 +80,29 @@ const RegisterSeller = () => {
               placeholder="Password"
               onChange={handleChange}
               required
-              className="w-full bg-transparent border-b border-white/30
-                         pb-3 text-base placeholder-gray-400
-                         focus:outline-none focus:border-white transition"
+              className="w-full border-b border-gray-300 bg-transparent
+                         py-2.5 text-sm text-gray-900
+                         placeholder-gray-400
+                         focus:outline-none
+                         focus:border-gray-500
+                         transition"
             />
 
             <button
               type="submit"
-              className="w-full mt-10 py-3.5 bg-white text-black
-                         text-sm font-medium tracking-wide
-                         hover:opacity-90 transition"
+              className="w-full mt-6 py-2.5 bg-black text-white
+                         text-sm font-medium rounded
+                         hover:opacity-90 active:scale-[0.99]
+                         transition"
             >
-              Continue →
+              Create seller account
             </button>
           </form>
 
           {/* Footer */}
-          <p className="mt-12 text-sm text-gray-300">
+          <p className="mt-7 text-center text-sm text-gray-500">
             Want to shop instead?{" "}
-            <Link to="/register-buyer" className="underline">
+            <Link to="/register-buyer" className="underline text-gray-900">
               Create buyer account
             </Link>
           </p>
@@ -111,5 +113,6 @@ const RegisterSeller = () => {
 };
 
 export default RegisterSeller;
+
 
 

@@ -15,10 +15,10 @@ const ProductList = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await api.get("/products/getdata");
-      setProducts(response.data.products || []);
-    } catch (error) {
-      console.error("Error fetching products:", error);
+      const res = await api.get("/products/getdata");
+      setProducts(res.data.products || []);
+    } catch (err) {
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -33,75 +33,73 @@ const ProductList = () => {
       );
     }
 
-    if (sort === "price-low") {
-      list.sort((a, b) => a.price - b.price);
-    }
-
-    if (sort === "price-high") {
-      list.sort((a, b) => b.price - a.price);
-    }
+    if (sort === "price-low") list.sort((a, b) => a.price - b.price);
+    if (sort === "price-high") list.sort((a, b) => b.price - a.price);
 
     return list;
   }, [products, search, sort]);
 
   return (
-    <div className="bg-white min-h-screen">
-      {/* Header */}
-      <div className="max-w-6xl mx-auto px-6 pt-10">
-        <h1 className="text-2xl font-semibold">
-          Products
-        </h1>
-        <p className="mt-1 text-sm text-gray-500">
-          {filteredProducts.length} items available
-        </p>
-      </div>
+    <div className="min-h-screen bg-[#F5F5F5]">
 
-      {/* Toolbar */}
-      <div className="max-w-6xl mx-auto px-6 mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <input
-          type="text"
-          placeholder="Search products"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full sm:w-64 border rounded-md px-3 py-2 text-sm
-                     focus:outline-none focus:border-black"
-        />
+      {/* HERO */}
+      <section className="bg-gradient-to-b from-black to-zinc-900 text-white">
+        <div className="max-w-6xl mx-auto px-6 py-24">
+          <span className="text-xs tracking-widest uppercase text-gray-400">
+            New arrivals
+          </span>
 
-        <select
-          value={sort}
-          onChange={(e) => setSort(e.target.value)}
-          className="w-40 border rounded-md px-3 py-2 text-sm
-                     focus:outline-none focus:border-black"
-        >
-          <option value="default">Sort</option>
-          <option value="price-low">Price: Low → High</option>
-          <option value="price-high">Price: High → Low</option>
-        </select>
-      </div>
+          <h1 className="mt-4 text-4xl md:text-5xl font-semibold leading-tight">
+            Discover products<br />worth owning
+          </h1>
 
-      {/* Grid */}
-      <div className="max-w-6xl mx-auto px-6 py-10">
+          <p className="mt-5 text-gray-300 max-w-xl text-sm leading-relaxed">
+            Handpicked items from verified sellers — built for quality,
+            priced for everyday value.
+          </p>
+
+          {/* Controls */}
+          <div className="mt-10 flex flex-col sm:flex-row gap-4">
+            <input
+              type="text"
+              placeholder="Search products…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full sm:w-80 rounded-xl px-4 py-3 text-sm
+                         text-black focus:outline-none"
+            />
+
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+              className="w-48 rounded-xl px-4 py-3 text-sm
+                         text-black focus:outline-none"
+            >
+              <option value="default">Sort</option>
+              <option value="price-low">Price: Low → High</option>
+              <option value="price-high">Price: High → Low</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      {/* GRID */}
+      <section className="max-w-6xl mx-auto px-6 py-20">
         {loading ? (
-          <p className="text-sm text-gray-500">
-            Loading products…
-          </p>
+          <p className="text-sm text-gray-500">Loading products…</p>
         ) : filteredProducts.length === 0 ? (
-          <p className="text-sm text-gray-500">
-            No products found.
-          </p>
+          <p className="text-sm text-gray-500">No products found.</p>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-10 gap-y-16">
             {filteredProducts.map((product) => (
-              <ProductCard
-                key={product._id}
-                product={product}
-              />
+              <ProductCard key={product._id} product={product} />
             ))}
           </div>
         )}
-      </div>
+      </section>
     </div>
   );
 };
 
 export default ProductList;
+
