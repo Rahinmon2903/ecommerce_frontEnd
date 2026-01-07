@@ -91,6 +91,12 @@ const Navbar = () => {
               >
                 Orders
               </Link>
+              <Link
+                to="/seller-stats"
+                className="text-gray-600 hover:text-black transition"
+              >
+                Analytics
+              </Link>
 
               <button
                 onClick={handleLogout}

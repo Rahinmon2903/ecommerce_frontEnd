@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "./Components/Navbar";
-import Home from "./Pages/Home";
+
 import Login from "./Pages/Login";
 
 import Cart from "./Pages/Cart";
@@ -20,6 +20,7 @@ import ProtectedRoute from "./Components/ProtectedRoute";
 import ForgotPassword from "./Pages/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword";
 import Wishlist from "./Pages/Wishlist";
+import SellerStats from "./Pages/SellerStats";
 
 const App = () => {
   return (
@@ -29,7 +30,7 @@ const App = () => {
           <Navbar />
         </div>
         <Routes>
-          <Route path="/" element={<Home />} />
+         
           <Route path="/login" element={<Login />} />
           <Route path="/register-buyer" element={<RegisterBuyer />} />
           <Route path="/register-seller" element={<RegisterSeller />} />
@@ -59,6 +60,14 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/seller-stats"
+            element={
+              <ProtectedRoute role="seller">
+                <SellerStats />
+              </ProtectedRoute>
+            }
+          />
 
           <Route
             path="/seller-dashboard"
@@ -84,7 +93,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-          <Route path="/register-choice" element={<RegisterChoice />} />
+          <Route path="/" element={<RegisterChoice />} />
 
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
