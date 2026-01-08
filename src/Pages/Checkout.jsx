@@ -54,16 +54,16 @@ const CheckOut = () => {
 
     try {
       setLoading(true);
-
+    /// create order
       const orderRes = await api.post("/orders/checkout", {
         shippingAddress: shipping,
       });
-
+      // get order id
       const orderId = orderRes.data.createOrder._id;
-
+      // create payment
       const paymentRes = await api.post("/payment/create", { orderId });
       const { razorpayOrder, key } = paymentRes.data;
-
+      // open razorpay
       const options = {
         key,
         amount: razorpayOrder.amount,
@@ -71,7 +71,7 @@ const CheckOut = () => {
         name: "E-Commerce",
         description: "Order Payment",
         order_id: razorpayOrder.id,
-
+      //  callback_url: "http://localhost:3000/payment/verify",when function executed successfully it will be called
         handler: async (response) => {
           await api.post("/payment/verify", {
             razorpay_payment_id: response.razorpay_payment_id,
