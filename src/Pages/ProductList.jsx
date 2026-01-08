@@ -25,14 +25,16 @@ const ProductList = () => {
   };
 
   const filteredProducts = useMemo(() => {
+    //coping the array
     let list = [...products];
-
+    
+    //filters
     if (search) {
       list = list.filter((p) =>
         p.name.toLowerCase().includes(search.toLowerCase())
       );
     }
-
+    //sort
     if (sort === "price-low") list.sort((a, b) => a.price - b.price);
     if (sort === "price-high") list.sort((a, b) => b.price - a.price);
 

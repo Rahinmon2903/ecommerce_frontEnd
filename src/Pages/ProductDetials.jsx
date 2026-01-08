@@ -18,7 +18,7 @@ const ProductDetails = () => {
   const [showMore, setShowMore] = useState(false);
 
   const auth = JSON.parse(localStorage.getItem("auth"));
-  const userId = auth?.user?.id;
+  const userId = auth?.user?._id;
   const isBuyer = auth?.user?.role === "buyer";
 
   useEffect(() => {
@@ -55,6 +55,7 @@ const ProductDetails = () => {
   };
 
   // -------- REVIEWS --------
+  //some stops when true but filter will iterate through all
   const alreadyReviewed = product?.reviews?.some(
     (r) => r.user === userId
   );
