@@ -17,6 +17,7 @@ const RegisterSeller = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      //every logic are same just role changed
       await api.post("/auth/register", {
         ...form,
         role: "seller",
