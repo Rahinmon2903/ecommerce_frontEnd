@@ -23,9 +23,7 @@ const SellerStats = () => {
     }
   };
 
-  /**
-   * 🔧 FIX: derive seller-specific stats
-   */
+  
   const stats = useMemo(() => {
     if (!rawStats) return null;
 

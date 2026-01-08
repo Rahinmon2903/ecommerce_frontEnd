@@ -86,7 +86,7 @@ const SellerOrders = () => {
 
         <div className="divide-y">
           {orders.map((order) => {
-            // 🔴 FIX: convert ObjectId → string before compare
+            //   convert ObjectId → string before compare
             const items = order.products?.filter(
               (item) =>
                 item.productId &&

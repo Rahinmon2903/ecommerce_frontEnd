@@ -15,7 +15,7 @@ const ProductCard = ({ product }) => {
       : "https://via.placeholder.com/500x500?text=No+Image";
 
   const addToWishlist = async (e) => {
-    e.preventDefault(); // ⛔ prevent card navigation
+    e.preventDefault(); //  prevent card navigation
     e.stopPropagation();
 
     if (!isBuyer) {
