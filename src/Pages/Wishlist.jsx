@@ -22,14 +22,20 @@ const Wishlist = () => {
     }
   };
 
-  const removeFromWishlist = async (productId) => {
+  const removeFromWishlist = async (e, productId) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     try {
-      await api.delete(`/wishlist/${productId}`);
+      await api.delete(`/wishlist/remove/${productId}`);
+
+      
       setWishlist((prev) =>
         prev.filter((item) => item._id !== productId)
       );
     } catch (error) {
       console.error("Failed to remove from wishlist", error);
+      alert("Failed to remove item from wishlist");
     }
   };
 
@@ -69,6 +75,7 @@ const Wishlist = () => {
   return (
     <div className="bg-[#F5F5F5] min-h-screen">
       <div className="max-w-6xl mx-auto px-6 py-16">
+        {/* HEADER */}
         <div className="mb-12">
           <h1 className="text-3xl font-semibold tracking-tight text-gray-900">
             Wishlist
@@ -78,6 +85,7 @@ const Wishlist = () => {
           </p>
         </div>
 
+        {/* GRID */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
           {wishlist.map((product) => {
             const imageUrl =
@@ -126,7 +134,9 @@ const Wishlist = () => {
                     </Link>
 
                     <button
-                      onClick={() => removeFromWishlist(product._id)}
+                      onClick={(e) =>
+                        removeFromWishlist(e, product._id)
+                      }
                       className="text-sm font-medium text-red-500
                                  hover:text-red-600 transition"
                     >
@@ -144,3 +154,4 @@ const Wishlist = () => {
 };
 
 export default Wishlist;
+

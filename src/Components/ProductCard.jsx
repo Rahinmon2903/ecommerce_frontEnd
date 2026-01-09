@@ -2,6 +2,10 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import api from "../Services/api";
 
+// wishlist icons
+import wishlistFilled from "../assets/w.png";
+import wishlistOutline from "../assets/images.png";
+
 const ProductCard = ({ product }) => {
   const auth = JSON.parse(localStorage.getItem("auth"));
   const isBuyer = auth?.user?.role === "buyer";
@@ -15,7 +19,7 @@ const ProductCard = ({ product }) => {
       : "https://via.placeholder.com/500x500?text=No+Image";
 
   const addToWishlist = async (e) => {
-    e.preventDefault(); //  prevent card navigation
+    e.preventDefault(); // prevent navigation
     e.stopPropagation();
 
     if (!isBuyer) {
@@ -43,7 +47,7 @@ const ProductCard = ({ product }) => {
 
   return (
     <div className="group relative">
-      {/* WISHLIST ICON */}
+      {/* WISHLIST BUTTON */}
       {isBuyer && (
         <button
           onClick={addToWishlist}
@@ -52,19 +56,26 @@ const ProductCard = ({ product }) => {
                      w-9 h-9 rounded-full
                      bg-white/90 backdrop-blur
                      flex items-center justify-center
-                     text-lg transition
-                     hover:scale-105
+                     transition hover:scale-110
+                     shadow-sm
                      disabled:opacity-60"
         >
-          {wishAdded ? "❤️" : "🤍"}
+          <img
+            src={wishAdded ?  wishlistOutline : wishlistFilled}
+            alt="Wishlist"
+            className="w-5 h-5"
+          />
         </button>
       )}
 
-      {/* CARD */}
+      {/* PRODUCT CARD */}
       <Link to={`/products/${product._id}`}>
-        <div className="bg-white rounded-2xl overflow-hidden
-                        transition group-hover:translate-y-[-2px]">
-
+        <div
+          className="bg-white rounded-2xl overflow-hidden
+                     transition-all duration-200
+                     group-hover:shadow-lg
+                     group-hover:-translate-y-1"
+        >
           {/* IMAGE */}
           <div className="relative w-full aspect-square bg-[#FAFAFA]">
             <img
@@ -77,8 +88,10 @@ const ProductCard = ({ product }) => {
 
           {/* CONTENT */}
           <div className="px-4 pt-4 pb-5">
-            <h3 className="text-sm font-medium text-gray-900
-                           leading-snug line-clamp-2">
+            <h3
+              className="text-sm font-medium text-gray-900
+                         leading-snug line-clamp-2"
+            >
               {product.name}
             </h3>
 
