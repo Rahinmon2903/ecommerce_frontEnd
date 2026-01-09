@@ -1,16 +1,113 @@
-# React + Vite
+# 🛍️ E-Commerce Frontend (React)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the **frontend** of a full-stack e-commerce application built with **React**, **Tailwind CSS**, and **Axios**.  
+It supports **buyers and sellers**, product browsing, cart, wishlist, checkout, and order management.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Tech Stack
 
-## React Compiler
+- React (Vite)
+- React Router DOM
+- Tailwind CSS
+- Axios
+- React Icons
+- React Toastify
+- Razorpay (Payments)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## ✨ Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Buyer
+- Register / Login
+- Browse products
+- Product details & reviews
+- Add to cart (live navbar update)
+- Wishlist
+- Checkout with Razorpay
+- Order history
+
+### Seller
+- Seller dashboard
+- Add products (image upload via Cloudinary)
+- View seller orders
+- Analytics & stats
+
+### General
+- Role-based protected routes
+- Toast notifications
+- Global page loader
+- Responsive UI
+
+---
+
+## 📁 Project Structure
+
+src/
+│
+├── Components/
+│ ├── Navbar.jsx
+│ ├── Footer.jsx
+│ ├── PageLoader.jsx
+│ └── ProtectedRoute.jsx
+│
+├── Pages/
+│ ├── ProductList.jsx
+│ ├── ProductDetails.jsx
+│ ├── Cart.jsx
+│ ├── Wishlist.jsx
+│ ├── CheckOut.jsx
+│ ├── MyOrders.jsx
+│ ├── SellerDashboard.jsx
+│ ├── SellerOrders.jsx
+│ └── SellerStats.jsx
+│
+├── Services/
+│ └── api.js
+│
+├── App.jsx
+├── main.jsx
+└── index.css
+
+
+---
+
+## ⚙️ Environment Variables
+
+Create a `.env` file in the **frontend root**:
+
+```env
+VITE_API_URL=https://your-backend-url/api
+
+▶️ Run Locally
+# install dependencies
+npm install
+
+# start development server
+npm run dev
+
+🧪 Build for Production
+npm run build
+
+🌍 Deployment
+
+Recommended platforms:
+
+Vercel
+
+Netlify
+
+Make sure VITE_API_URL points to the deployed backend.
+
+📌 Notes
+
+Cart & wishlist counts update instantly using browser events
+
+Toast notifications are handled via react-toastify
+
+Payments use Razorpay test/live keys
+
+👨‍💻 Author
+
+Built with ❤️ by Rahin Mon S
