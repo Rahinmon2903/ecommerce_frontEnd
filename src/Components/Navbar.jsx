@@ -9,11 +9,11 @@ import {
   FiLogOut,
   FiBox,
   FiGrid,
+  FiBarChart2,
 } from "react-icons/fi";
 
 const Navbar = () => {
   const navigate = useNavigate();
-
   const auth = JSON.parse(localStorage.getItem("auth"));
   const role = auth?.user?.role;
 
@@ -25,29 +25,37 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  /*  FETCH COUNTS (BUYER)  */
-  useEffect(() => {
+  /* ---------------- FETCH COUNTS ---------------- */
+  const fetchCounts = async () => {
     if (!auth || role !== "buyer") return;
 
-    const fetchCounts = async () => {
-      try {
-        const cartRes = await api.get("/cart");
-        setCartCount(cartRes.data.cart?.products?.length || 0);
+    try {
+      const cartRes = await api.get("/cart");
+      setCartCount(cartRes.data.cart?.products?.length || 0);
 
-        const orderRes = await api.get("/orders/my-orders");
-        setOrderCount(orderRes.data.orders?.length || 0);
-      } catch {
-        console.error("Navbar count fetch failed");
-      }
-    };
+      const orderRes = await api.get("/orders/my-orders");
+      setOrderCount(orderRes.data.orders?.length || 0);
+    } catch (err) {
+      console.error("Navbar count fetch failed");
+    }
+  };
 
+ 
+  useEffect(() => {
     fetchCounts();
   }, [auth, role]);
+
+
+  useEffect(() => {
+    window.addEventListener("cart-updated", fetchCounts);
+    return () =>
+      window.removeEventListener("cart-updated", fetchCounts);
+  }, []);
 
   return (
     <header className="bg-white border-b sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        
+
         {/* BRAND */}
         <Link
           to="/"
@@ -59,7 +67,7 @@ const Navbar = () => {
         </Link>
 
         {/* NAV */}
-        <nav className="flex items-center gap-6 text-sm text-gray-700">
+        <nav className="flex items-center gap-6 text-gray-700">
 
           {/* NOT LOGGED IN */}
           {!auth && (
@@ -71,25 +79,20 @@ const Navbar = () => {
               <Link
                 to="/register-buyer"
                 className="px-4 py-2 bg-black text-white rounded-md
-                           font-medium hover:opacity-90 transition"
+                           text-sm font-medium hover:opacity-90"
               >
                 Create account
               </Link>
             </>
           )}
 
-          {/* BUYER */}
+          {/* BUYER NAV */}
           {auth && role === "buyer" && (
             <>
-              {/* PRODUCTS */}
-              <Link
-                to="/products"
-                className="flex items-center gap-1 hover:text-black"
-              >
+              <Link to="/products" className="hover:text-black">
                 <FiGrid size={20} />
               </Link>
 
-              {/* CART */}
               <Link to="/cart" className="relative hover:text-black">
                 <FiShoppingCart size={20} />
                 {cartCount > 0 && (
@@ -103,7 +106,6 @@ const Navbar = () => {
                 )}
               </Link>
 
-              {/* ORDERS */}
               <Link to="/my-orders" className="relative hover:text-black">
                 <FiPackage size={20} />
                 {orderCount > 0 && (
@@ -117,39 +119,37 @@ const Navbar = () => {
                 )}
               </Link>
 
-              {/* WISHLIST */}
               <Link to="/wishlist" className="hover:text-black">
                 <FiHeart size={20} />
               </Link>
 
-              {/* LOGOUT */}
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-1 text-red-500 hover:text-red-600"
+                className="hover:text-red-600 text-red-500"
               >
                 <FiLogOut size={18} />
               </button>
             </>
           )}
 
-          {/* SELLER */}
+          {/* SELLER NAV (WITH ICONS) */}
           {auth && role === "seller" && (
             <>
               <Link to="/seller-dashboard" className="hover:text-black">
-                Dashboard
+                <FiBox size={20} />
               </Link>
 
               <Link to="/seller-orders" className="hover:text-black">
-                <FiBox size={18} />
+                <FiPackage size={20} />
               </Link>
 
               <Link to="/seller-stats" className="hover:text-black">
-                Analytics
+                <FiBarChart2 size={20} />
               </Link>
 
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-1 text-red-500 hover:text-red-600"
+                className="hover:text-red-600 text-red-500"
               >
                 <FiLogOut size={18} />
               </button>
