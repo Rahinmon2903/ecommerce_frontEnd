@@ -40,12 +40,10 @@ const ProductDetails = () => {
   const addToCart = async () => {
     try {
       setAddingToCart(true);
-
       await api.post("/cart/add", {
         productId: product._id,
         quantity: 1,
       });
-
       alert("Added to cart");
     } catch (error) {
       alert(error.response?.data?.message || "Failed to add to cart");
@@ -55,7 +53,6 @@ const ProductDetails = () => {
   };
 
   // -------- REVIEWS --------
-  //some stops when true but filter will iterate through all
   const alreadyReviewed = product?.reviews?.some(
     (r) => r.user === userId
   );
@@ -115,7 +112,7 @@ const ProductDetails = () => {
             </h1>
 
             <p className="mt-2 text-sm text-gray-500">
-              Sold by {product.seller?.name || "Seller"}
+              Sold by {product.seller?.name || "Verified Seller"}
             </p>
 
             <p className="mt-8 text-4xl font-semibold text-gray-900">
@@ -138,17 +135,36 @@ const ProductDetails = () => {
               </div>
             )}
 
-            {/* HIGHLIGHTS */}
+            {/* TRUST SECTION */}
             <div className="mt-10 grid grid-cols-2 gap-4 text-sm">
               {[
-                ["Display", "6.9″ XDR"],
-                ["Processor", "A18 Pro"],
-                ["Camera", "48MP Triple"],
-                ["Battery", "All-day"],
-              ].map(([title, value]) => (
-                <div key={title} className="border rounded-xl p-4">
-                  <p className="font-medium text-gray-900">{title}</p>
-                  <p className="text-gray-600 mt-1">{value}</p>
+                {
+                  title: "Quality Assured",
+                  desc: "Seller verified before dispatch",
+                },
+                {
+                  title: "Fast Delivery",
+                  desc: "Reliable shipping nationwide",
+                },
+                {
+                  title: "Secure Payments",
+                  desc: "100% protected checkout",
+                },
+                {
+                  title: "Easy Support",
+                  desc: "Customer help always available",
+                },
+              ].map((item) => (
+                <div
+                  key={item.title}
+                  className="rounded-xl border border-gray-200 bg-gray-50 p-4"
+                >
+                  <p className="font-medium text-gray-900">
+                    {item.title}
+                  </p>
+                  <p className="mt-1 text-gray-600">
+                    {item.desc}
+                  </p>
                 </div>
               ))}
             </div>
@@ -246,5 +262,3 @@ const ProductDetails = () => {
 };
 
 export default ProductDetails;
-
-
