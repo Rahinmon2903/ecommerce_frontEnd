@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import api from "../Services/api";
 import { toast } from "react-toastify";
 
-const CheckOut = () => {
+const Checkout = () => {
   const [cart, setCart] = useState(null);
   const [cartLoading, setCartLoading] = useState(true);
   const [paymentLoading, setPaymentLoading] = useState(false);
@@ -211,5 +211,5 @@ const CheckOut = () => {
   );
 };
 
-export default CheckOut;
+export default Checkout;
 

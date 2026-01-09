@@ -6,8 +6,8 @@ import Login from "./Pages/Login";
 
 import Cart from "./Pages/Cart";
 import ProductList from "./Pages/ProductList";
-import ProductDetials from "./Pages/ProductDetials";
-import CheckOut from "./Pages/CheckOut";
+import ProductDetails from "./Pages/ProductDetails";
+import Checkout from "./Pages/Checkout";
 
 import SellerDashboard from "./Pages/SellerDashboard";
 import Footer from "./Components/Footer";
@@ -45,12 +45,12 @@ const App = () => {
             }
           />
           <Route path="/products" element={<ProductList />} />
-          <Route path="/products/:id" element={<ProductDetials />} />
+          <Route path="/products/:id" element={<ProductDetails />} />
           <Route
             path="/checkout"
             element={
               <ProtectedRoute role="buyer">
-                <CheckOut />
+                <Checkout />
               </ProtectedRoute>
             }
           />
