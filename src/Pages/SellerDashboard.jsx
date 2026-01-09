@@ -9,7 +9,7 @@ const SellerDashboard = () => {
     price: "",
     category: "",
     stock: "",
-    image: "",
+    images: [],
   });
 
   const handleChange = (e) => {
@@ -20,17 +20,20 @@ const SellerDashboard = () => {
     e.preventDefault();
 
     try {
-      const payload = {
-        name: form.name,
-        description: form.description,
-        price: form.price,
-        category: form.category,
-        stock: form.stock,
-        images: form.image ? [form.image] : [],
-      };
+      const formData = new FormData();
+      formData.append("name", form.name);
+      formData.append("description", form.description);
+      formData.append("price", form.price);
+      formData.append("category", form.category);
+      formData.append("stock", form.stock);
 
-      await api.post("/products/create", payload);
-      toast.success("Product published");
+      for (let i = 0; i < form.images.length; i++) {
+        formData.append("images", form.images[i]);
+      }
+
+      await api.post("/products/create", formData);
+
+      toast.success("Product added successfully");
 
       setForm({
         name: "",
@@ -38,167 +41,116 @@ const SellerDashboard = () => {
         price: "",
         category: "",
         stock: "",
-        image: "",
+        images: [],
       });
     } catch (error) {
-       const msg =
-                     error.response?.data?.message ||
-                     error.message ||
-                     "Something went wrong";
-                 
-                   toast.error(msg);
+      toast.error(
+        error.response?.data?.message || "Failed to add product"
+      );
     }
   };
 
   const previewImage =
-    form.image || "https://via.placeholder.com/500x500?text=Product+Image";
+    form.images.length > 0
+      ? URL.createObjectURL(form.images[0])
+      : "https://via.placeholder.com/500x500?text=Product+Image";
 
   return (
     <div className="bg-[#FAFAFA] min-h-screen">
       <div className="max-w-6xl mx-auto px-6 py-16">
-
-        {/* HEADER */}
-        <div className="mb-14">
-          <h1 className="text-3xl font-semibold text-gray-900">
-            Add new product
-          </h1>
-          <p className="mt-2 text-sm text-gray-500">
-            This is exactly how customers will see your product
-          </p>
-        </div>
+        <h1 className="text-3xl font-semibold mb-10">
+          Add new product
+        </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-
           {/* FORM */}
           <form
             onSubmit={handleSubmit}
-            className="bg-white rounded-2xl p-8
-                       shadow-[0_18px_60px_rgba(0,0,0,0.08)]
-                       space-y-9"
+            className="bg-white p-8 rounded-2xl shadow space-y-6"
           >
-            <div>
-              <label className="text-xs text-gray-500">Product name</label>
-              <input
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                placeholder="Premium wireless headphones"
-                className="w-full mt-2 border-b px-1 py-2.5 text-sm
-                           placeholder-gray-400 focus:outline-none"
-                required
-              />
-            </div>
+            <input
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              placeholder="Product name"
+              required
+              className="w-full border-b p-2"
+            />
 
-            <div>
-              <label className="text-xs text-gray-500">Description</label>
-              <textarea
-                name="description"
-                value={form.description}
-                onChange={handleChange}
-                rows={4}
-                placeholder="Describe what makes this product special…"
-                className="w-full mt-2 border-b px-1 py-2.5 text-sm
-                           placeholder-gray-400 resize-none focus:outline-none"
-              />
-            </div>
+            <textarea
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              placeholder="Description"
+              rows={4}
+              className="w-full border-b p-2"
+            />
 
-            <div className="grid grid-cols-2 gap-6">
-              <div>
-                <label className="text-xs text-gray-500">Price (₹)</label>
-                <input
-                  name="price"
-                  type="number"
-                  value={form.price}
-                  onChange={handleChange}
-                  placeholder="2999"
-                  className="w-full mt-2 border-b px-1 py-2.5 text-sm
-                             placeholder-gray-400 focus:outline-none"
-                  required
-                />
-              </div>
+            <input
+              type="number"
+              name="price"
+              value={form.price}
+              onChange={handleChange}
+              placeholder="Price"
+              required
+              className="w-full border-b p-2"
+            />
 
-              <div>
-                <label className="text-xs text-gray-500">Stock</label>
-                <input
-                  name="stock"
-                  type="number"
-                  value={form.stock}
-                  onChange={handleChange}
-                  placeholder="50"
-                  className="w-full mt-2 border-b px-1 py-2.5 text-sm
-                             placeholder-gray-400 focus:outline-none"
-                  required
-                />
-              </div>
-            </div>
+            <input
+              type="number"
+              name="stock"
+              value={form.stock}
+              onChange={handleChange}
+              placeholder="Stock"
+              required
+              className="w-full border-b p-2"
+            />
 
-            <div>
-              <label className="text-xs text-gray-500">Category</label>
-              <input
-                name="category"
-                value={form.category}
-                onChange={handleChange}
-                placeholder="Electronics"
-                className="w-full mt-2 border-b px-1 py-2.5 text-sm
-                           placeholder-gray-400 focus:outline-none"
-              />
-            </div>
+            <input
+              name="category"
+              value={form.category}
+              onChange={handleChange}
+              placeholder="Category"
+              className="w-full border-b p-2"
+            />
 
-            <div>
-              <label className="text-xs text-gray-500">Image URL</label>
-              <input
-                name="image"
-                value={form.image}
-                onChange={handleChange}
-                placeholder="https://example.com/image.jpg"
-                className="w-full mt-2 border-b px-1 py-2.5 text-sm
-                           placeholder-gray-400 focus:outline-none"
-              />
-            </div>
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  images: Array.from(e.target.files),
+                })
+              }
+            />
 
-            <button
-              type="submit"
-              className="w-full mt-6 py-3.5 bg-gray-900 text-white
-                         text-sm font-medium tracking-wide
-                         rounded-2xl hover:opacity-90
-                         active:scale-[0.99] transition"
-            >
+            <button className="w-full bg-black text-white py-3 rounded-xl">
               Publish product
             </button>
           </form>
 
           {/* PREVIEW */}
-          <div className="bg-white rounded-2xl p-8
-                          shadow-[0_18px_60px_rgba(0,0,0,0.08)]">
-            <p className="text-xs text-gray-400 mb-3">
-              Live preview
-            </p>
+          <div className="bg-white p-8 rounded-2xl shadow">
+            <img
+              src={previewImage}
+              alt="Preview"
+              className="max-h-72 mx-auto object-contain"
+            />
 
-            <div className="bg-gray-100 rounded-2xl p-8 flex items-center justify-center">
-              <img
-                src={previewImage}
-                alt="Preview"
-                className="max-h-72 object-contain"
-              />
-            </div>
-
-            <h3 className="mt-8 text-xl font-semibold text-gray-900 leading-snug">
+            <h2 className="mt-6 text-xl font-semibold">
               {form.name || "Product name"}
-            </h3>
+            </h2>
 
-            <p className="mt-2 text-sm text-gray-600 leading-relaxed">
-              {form.description || "Product description will appear here"}
+            <p className="text-gray-600 mt-2">
+              {form.description || "Product description"}
             </p>
 
-            <p className="mt-6 text-2xl font-semibold text-gray-900">
-              ₹ {form.price || "0"}
-            </p>
-
-            <p className="mt-1 text-xs text-gray-400">
-              Category: {form.category || "—"} · Stock: {form.stock || "—"}
+            <p className="mt-4 text-2xl font-bold">
+              ₹ {form.price || 0}
             </p>
           </div>
-
         </div>
       </div>
     </div>

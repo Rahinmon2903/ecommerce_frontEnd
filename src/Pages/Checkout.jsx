@@ -95,6 +95,7 @@ const CheckOut = () => {
 
           toast.success("Payment successful");
           setCart({ products: [] });
+          window.dispatchEvent(new Event("cart-updated"));
         },
       };
 

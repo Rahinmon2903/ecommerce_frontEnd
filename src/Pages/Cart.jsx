@@ -37,6 +37,7 @@ const Cart = () => {
         productId,
         quantity: delta,
       });
+      window.dispatchEvent(new Event("cart-updated"));
       fetchCart();
     } catch (error) {
       const msg =
@@ -54,6 +55,7 @@ const Cart = () => {
     setUpdatingId(productId);
     try {
       await api.delete(`/cart/remove/${productId}`);
+      window.dispatchEvent(new Event("cart-updated"));
       fetchCart();
     } catch (error) {
        const msg =

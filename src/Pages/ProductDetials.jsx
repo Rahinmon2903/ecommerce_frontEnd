@@ -51,6 +51,7 @@ const ProductDetails = () => {
         productId: product._id,
         quantity: 1,
       });
+      window.dispatchEvent(new Event("cart-updated"));
       toast.success("Added to cart");
     } catch (error) {
       const msg =

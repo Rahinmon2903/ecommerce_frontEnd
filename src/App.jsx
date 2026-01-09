@@ -21,11 +21,13 @@ import ForgotPassword from "./Pages/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword";
 import Wishlist from "./Pages/Wishlist";
 import SellerStats from "./Pages/SellerStats";
+import PageLoader from "./Components/PageLoader";
 
 const App = () => {
   return (
     <>
       <BrowserRouter>
+      <PageLoader />
         <div>
           <Navbar />
         </div>
