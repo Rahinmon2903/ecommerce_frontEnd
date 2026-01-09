@@ -72,6 +72,10 @@ src/
 
 
 ---
+## ⚙️ Clone repository:
+
+front-End:https://github.com/Rahinmon2903/ecommerce_frontEnd,
+back-End:https://github.com/Rahinmon2903/ecommerce-backEnd
 
 ## ⚙️ Environment Variables
 
@@ -90,7 +94,7 @@ npm run dev
 🧪 Build for Production
 npm run build
 
-🌍 Deployment
+🌍 Deployment 
 
 Recommended platforms:
 
@@ -99,6 +103,9 @@ Vercel
 Netlify
 
 Make sure VITE_API_URL points to the deployed backend.
+
+🌍 Deployment URL
+https://ecommerce-front-end-rtyf.vercel.app/
 
 📌 Notes
 
