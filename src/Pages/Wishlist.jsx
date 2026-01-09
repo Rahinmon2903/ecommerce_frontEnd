@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../Services/api";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState([]);
@@ -15,7 +16,12 @@ const Wishlist = () => {
       const res = await api.get("/wishlist");
       setWishlist(res.data.wishlist || []);
     } catch (error) {
-      console.error("Failed to fetch wishlist", error);
+        const msg =
+                      error.response?.data?.message ||
+                      error.message ||
+                      "Something went wrong";
+                  
+                    toast.error(msg);
       setWishlist([]);
     } finally {
       setLoading(false);
@@ -35,7 +41,7 @@ const Wishlist = () => {
       );
     } catch (error) {
       console.error("Failed to remove from wishlist", error);
-      alert("Failed to remove item from wishlist");
+      toast.error("Failed to remove item from wishlist");
     }
   };
 

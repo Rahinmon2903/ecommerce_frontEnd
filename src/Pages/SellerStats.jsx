@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import api from "../Services/api";
+import { toast } from "react-toastify";
 
 const SellerStats = () => {
   const [rawStats, setRawStats] = useState(null);
@@ -16,7 +17,12 @@ const SellerStats = () => {
       const res = await api.get("/orders/seller-stats");
       setRawStats(res.data);
     } catch (error) {
-      console.error(error);
+        const msg =
+                      error.response?.data?.message ||
+                      error.message ||
+                      "Something went wrong";
+                  
+                    toast.error(msg);
       setRawStats(null);
     } finally {
       setLoading(false);

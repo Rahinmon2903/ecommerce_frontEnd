@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../Services/api";
+import { toast } from "react-toastify";
 
 const SellerOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -25,7 +26,12 @@ const SellerOrders = () => {
 
       setOrders(Array.isArray(ordersArray) ? ordersArray : []);
     } catch (error) {
-      console.error("Failed to fetch seller orders", error);
+      const msg =
+                    error.response?.data?.message ||
+                    error.message ||
+                    "Something went wrong";
+                
+                  toast.error(msg);
       setOrders([]);
     } finally {
       setLoading(false);
@@ -39,10 +45,12 @@ const SellerOrders = () => {
       });
       fetchSellerOrders();
     } catch (error) {
-      alert(
-        error.response?.data?.message ||
-          "Failed to update status"
-      );
+       const msg =
+                     error.response?.data?.message ||
+                     error.message ||
+                     "Something went wrong";
+                 
+                   toast.error(msg);
     }
   };
 

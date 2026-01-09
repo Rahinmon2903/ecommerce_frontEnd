@@ -5,6 +5,7 @@ import api from "../Services/api";
 // wishlist icons
 import wishlistFilled from "../assets/w.png";
 import wishlistOutline from "../assets/images.png";
+import { toast } from "react-toastify";
 
 const ProductCard = ({ product }) => {
   const auth = JSON.parse(localStorage.getItem("auth"));
@@ -23,7 +24,7 @@ const ProductCard = ({ product }) => {
     e.stopPropagation();
 
     if (!isBuyer) {
-      alert("Login as buyer to use wishlist");
+      toast.error("Login as buyer to use wishlist");
       return;
     }
 
@@ -36,10 +37,12 @@ const ProductCard = ({ product }) => {
 
       setWishAdded(true);
     } catch (error) {
-      alert(
-        error.response?.data?.message ||
-          "Failed to add to wishlist"
-      );
+        const msg =
+                error.response?.data?.message ||
+                error.message ||
+                "Something went wrong";
+            
+              toast.error(msg);
     } finally {
       setWishLoading(false);
     }

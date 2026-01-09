@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import api from "../Services/api";
 import ProductCard from "../Components/ProductCard";
+import { toast } from "react-toastify";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -17,8 +18,13 @@ const ProductList = () => {
     try {
       const res = await api.get("/products/getdata");
       setProducts(res.data.products || []);
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      const msg =
+                error.response?.data?.message ||
+                error.message ||
+                "Something went wrong";
+            
+              toast.error(msg);
     } finally {
       setLoading(false);
     }

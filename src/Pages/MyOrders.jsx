@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../Services/api";
+import { toast } from "react-toastify";
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -14,7 +15,12 @@ const MyOrders = () => {
       const res = await api.get("/orders/my-orders");
       setOrders(Array.isArray(res.data.orders) ? res.data.orders : []);
     } catch (error) {
-      console.error(error);
+      const msg =
+                error.response?.data?.message ||
+                error.message ||
+                "Something went wrong";
+            
+              toast.error(msg);
       setOrders([]);
     } finally {
       setLoading(false);

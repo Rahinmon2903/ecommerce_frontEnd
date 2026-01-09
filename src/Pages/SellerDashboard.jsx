@@ -1,5 +1,6 @@
 import { useState } from "react";
 import api from "../Services/api";
+import { toast } from "react-toastify";
 
 const SellerDashboard = () => {
   const [form, setForm] = useState({
@@ -29,7 +30,7 @@ const SellerDashboard = () => {
       };
 
       await api.post("/products/create", payload);
-      alert("Product published");
+      toast.success("Product published");
 
       setForm({
         name: "",
@@ -40,7 +41,12 @@ const SellerDashboard = () => {
         image: "",
       });
     } catch (error) {
-      alert(error.response?.data?.message || "Something went wrong");
+       const msg =
+                     error.response?.data?.message ||
+                     error.message ||
+                     "Something went wrong";
+                 
+                   toast.error(msg);
     }
   };
 

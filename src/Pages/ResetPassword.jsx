@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../Services/api";
 import AuthSlider from "../Components/AuthSlider";
+import { toast } from "react-toastify";
 
 const ResetPassword = () => {
   const { token } = useParams();
@@ -14,10 +15,15 @@ const ResetPassword = () => {
     try {
       setLoading(true);
       await api.post(`/auth/reset-password/${token}`, { password });
-      alert("Password reset successful");
+      toast.success("Password reset successful");
       navigate("/login");
     } catch (error) {
-      alert("Reset link invalid or expired");
+        const msg =
+                error.response?.data?.message ||
+                error.message ||
+                "Something went wrong";
+            
+              toast.error(msg);
     } finally {
       setLoading(false);
     }

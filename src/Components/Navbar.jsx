@@ -11,6 +11,7 @@ import {
   FiGrid,
   FiBarChart2,
 } from "react-icons/fi";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -35,8 +36,13 @@ const Navbar = () => {
 
       const orderRes = await api.get("/orders/my-orders");
       setOrderCount(orderRes.data.orders?.length || 0);
-    } catch (err) {
-      console.error("Navbar count fetch failed");
+    } catch (error) {
+        const msg =
+                      error.response?.data?.message ||
+                      error.message ||
+                      "Something went wrong";
+                  
+                    toast.error(msg);
     }
   };
 

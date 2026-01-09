@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import api from "../Services/api";
+import { toast } from "react-toastify";
 
 const CheckOut = () => {
   const [cart, setCart] = useState(null);
@@ -23,7 +24,13 @@ const CheckOut = () => {
       const res = await api.get("/cart");
       setCart(res.data.cart);
     } catch (error) {
-      console.error(error);
+        const msg =
+          error.response?.data?.message ||
+          error.message ||
+          "Something went wrong";
+      
+        toast.error(msg);
+     
     }
   };
 
@@ -48,7 +55,7 @@ const CheckOut = () => {
       !shipping.state ||
       !shipping.postalCode
     ) {
-      alert("Please fill all shipping details");
+      toast.error("Please fill all shipping details");
       return;
     }
 
@@ -80,14 +87,15 @@ const CheckOut = () => {
             orderId,
           });
 
-          alert("Payment successful");
+          toast.success("Payment successful");
           setCart(null);
         },
       };
 
       new window.Razorpay(options).open();
     } catch (error) {
-      alert("Payment failed");
+      
+      toast.error("Payment failed");
     } finally {
       setLoading(false);
     }

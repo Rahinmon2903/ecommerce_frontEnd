@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../Services/api";
 import AuthSlider from "../Components/AuthSlider";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -17,7 +18,12 @@ const Login = () => {
       localStorage.setItem("auth", JSON.stringify(res.data));
       navigate(res.data.user.role === "buyer" ? "/products" : "/seller-dashboard");
     } catch {
-      alert("Login failed");
+     const msg =
+               error.response?.data?.message ||
+               error.message ||
+               "Something went wrong";
+           
+             toast.error(msg);
     }
   };
 

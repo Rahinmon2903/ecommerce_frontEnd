@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../Services/api";
+import { toast } from "react-toastify";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -29,8 +30,14 @@ const ProductDetails = () => {
     try {
       const res = await api.get(`/products/getById/${id}`);
       setProduct(res.data.product);
-    } catch {
+    } catch(error) {
       setProduct(null);
+      const msg =
+                error.response?.data?.message ||
+                error.message ||
+                "Something went wrong";
+            
+              toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -44,9 +51,14 @@ const ProductDetails = () => {
         productId: product._id,
         quantity: 1,
       });
-      alert("Added to cart");
+      toast.success("Added to cart");
     } catch (error) {
-      alert(error.response?.data?.message || "Failed to add to cart");
+      const msg =
+          error.response?.data?.message ||
+          error.message ||
+          "Something went wrong";
+      
+        toast.error(msg);
     } finally {
       setAddingToCart(false);
     }

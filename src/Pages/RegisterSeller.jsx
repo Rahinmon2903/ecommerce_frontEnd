@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../Services/api";
 import AuthSlider from "../Components/AuthSlider";
+import { toast } from "react-toastify";
 
 const RegisterSeller = () => {
   const navigate = useNavigate();
@@ -23,8 +24,13 @@ const RegisterSeller = () => {
         role: "seller",
       });
       navigate("/login");
-    } catch (err) {
-      alert(err.response?.data?.message || "Register failed");
+    } catch (error) {
+       const msg =
+                     error.response?.data?.message ||
+                     error.message ||
+                     "Something went wrong";
+                 
+                   toast.error(msg);
     }
   };
 

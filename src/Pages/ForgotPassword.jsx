@@ -1,6 +1,7 @@
 import { useState } from "react";
 import api from "../Services/api";
 import AuthSlider from "../Components/AuthSlider";
+import { toast } from "react-toastify";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -11,9 +12,15 @@ const ForgotPassword = () => {
     try {
       setLoading(true);
       await api.post("/auth/forgot-password", { email });
-      alert("If the email exists, a reset link has been sent");
+      toast.success("If the email exists, a reset link has been sent");
     } catch (error) {
-      alert("Something went wrong");
+      const msg =
+                error.response?.data?.message ||
+                error.message ||
+                "Something went wrong";
+            
+              toast.error(msg);
+      
     } finally {
       setLoading(false);
     }

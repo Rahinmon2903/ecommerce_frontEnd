@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../Services/api";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const [cart, setCart] = useState(null);
@@ -16,8 +17,13 @@ const Cart = () => {
     try {
       const res = await api.get("/cart");
       setCart(res.data.cart);
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+       const msg =
+    error.response?.data?.message ||
+    error.message ||
+    "Something went wrong";
+
+  toast.error(msg);
       setCart(null);
     } finally {
       setLoading(false);
@@ -32,8 +38,13 @@ const Cart = () => {
         quantity: delta,
       });
       fetchCart();
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      const msg =
+    error.response?.data?.message ||
+    error.message ||
+    "Something went wrong";
+
+  toast.error(msg);
     } finally {
       setUpdatingId(null);
     }
@@ -44,8 +55,13 @@ const Cart = () => {
     try {
       await api.delete(`/cart/remove/${productId}`);
       fetchCart();
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+       const msg =
+    error.response?.data?.message ||
+    error.message ||
+    "Something went wrong";
+
+  toast.error(msg);
     } finally {
       setUpdatingId(null);
     }
