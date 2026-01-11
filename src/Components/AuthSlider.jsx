@@ -10,6 +10,8 @@ const slides = [
 
 const AuthSlider = () => {
   const [index, setIndex] = useState(0);
+  //open README.md
+// add one empty line or comment
 
   useEffect(() => {
     const t = setInterval(
