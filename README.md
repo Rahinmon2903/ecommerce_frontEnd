@@ -45,26 +45,25 @@ It supports **buyers and sellers**, product browsing, cart, wishlist, checkout, 
 ## 📁 Project Structure
 
 src/
-│
 ├── Components/
-│ ├── Navbar.jsx
-│ ├── Footer.jsx
-│ ├── PageLoader.jsx
-│ └── ProtectedRoute.jsx
+│   ├── Navbar.jsx
+│   ├── Footer.jsx
+│   ├── PageLoader.jsx
+│   └── ProtectedRoute.jsx
 │
 ├── Pages/
-│ ├── ProductList.jsx
-│ ├── ProductDetails.jsx
-│ ├── Cart.jsx
-│ ├── Wishlist.jsx
-│ ├── CheckOut.jsx
-│ ├── MyOrders.jsx
-│ ├── SellerDashboard.jsx
-│ ├── SellerOrders.jsx
-│ └── SellerStats.jsx
+│   ├── ProductList.jsx
+│   ├── ProductDetails.jsx
+│   ├── Cart.jsx
+│   ├── Wishlist.jsx
+│   ├── CheckOut.jsx
+│   ├── MyOrders.jsx
+│   ├── SellerDashboard.jsx
+│   ├── SellerOrders.jsx
+│   └── SellerStats.jsx
 │
 ├── Services/
-│ └── api.js
+│   └── api.js
 │
 ├── App.jsx
 ├── main.jsx
