@@ -40,10 +40,9 @@ It supports **buyers and sellers**, product browsing, cart, wishlist, checkout, 
 - Global page loader
 - Responsive UI
 
----
-
 ## 📁 Project Structure
 
+```plaintext
 src/
 ├── Components/
 │   ├── Navbar.jsx
@@ -68,9 +67,8 @@ src/
 ├── App.jsx
 ├── main.jsx
 └── index.css
+```
 
-
----
 ## ⚙️ Clone repository:
 
 front-End:https://github.com/Rahinmon2903/ecommerce_frontEnd,
