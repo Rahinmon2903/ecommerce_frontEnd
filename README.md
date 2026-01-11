@@ -112,6 +112,8 @@ Toast notifications are handled via react-toastify
 
 Payments use Razorpay test/live keys
 
+little update
+
 👨‍💻 Author
 
 Built with ❤️ by Rahin Mon S
