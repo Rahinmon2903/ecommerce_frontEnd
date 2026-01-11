@@ -1,1 +1,8 @@
-{ "rewrites": [ { "source": "/reset-password/:token", "destination": "/" }, { "source": "/(.*)", "destination": "/" } ] }
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
+}
