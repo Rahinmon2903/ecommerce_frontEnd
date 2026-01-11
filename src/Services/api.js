@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-    baseURL: "http://localhost:3000/api",
+    baseURL: "https://ecommerce-backend-4-wys7.onrender.com/api",
 });
 
 api.interceptors.request.use((req)=>{
