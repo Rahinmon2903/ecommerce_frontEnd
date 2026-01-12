@@ -22,17 +22,17 @@ import ResetPassword from "./Pages/ResetPassword";
 import Wishlist from "./Pages/Wishlist";
 import SellerStats from "./Pages/SellerStats";
 import PageLoader from "./Components/PageLoader";
+import SellerProducts from "./Pages/SellerProducts";
 
 const App = () => {
   return (
     <>
       <BrowserRouter>
-      <PageLoader />
+        <PageLoader />
         <div>
           <Navbar />
         </div>
         <Routes>
-         
           <Route path="/login" element={<Login />} />
           <Route path="/register-buyer" element={<RegisterBuyer />} />
           <Route path="/register-seller" element={<RegisterSeller />} />
@@ -95,6 +95,15 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/seller-products"
+            element={
+              <ProtectedRoute role="seller">
+                <SellerProducts />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="/" element={<RegisterChoice />} />
 
           <Route path="/forgot-password" element={<ForgotPassword />} />

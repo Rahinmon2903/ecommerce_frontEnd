@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../Services/api";
+import { FiLayers } from "react-icons/fi";
 
 import {
   FiShoppingCart,
@@ -37,31 +38,27 @@ const Navbar = () => {
       const orderRes = await api.get("/orders/my-orders");
       setOrderCount(orderRes.data.orders?.length || 0);
     } catch (error) {
-        const msg =
-                      error.response?.data?.message ||
-                      error.message ||
-                      "Something went wrong";
-                  
-                    toast.error(msg);
+      const msg =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+
+      toast.error(msg);
     }
   };
 
- 
   useEffect(() => {
     fetchCounts();
   }, [auth, role]);
 
-
   useEffect(() => {
     window.addEventListener("cart-updated", fetchCounts);
-    return () =>
-      window.removeEventListener("cart-updated", fetchCounts);
+    return () => window.removeEventListener("cart-updated", fetchCounts);
   }, []);
 
   return (
     <header className="bg-white border-b sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-
         {/* BRAND */}
         <Link
           to="/"
@@ -74,7 +71,6 @@ const Navbar = () => {
 
         {/* NAV */}
         <nav className="flex items-center gap-6 text-gray-700">
-
           {/* NOT LOGGED IN */}
           {!auth && (
             <>
@@ -102,11 +98,13 @@ const Navbar = () => {
               <Link to="/cart" className="relative hover:text-black">
                 <FiShoppingCart size={20} />
                 {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2
+                  <span
+                    className="absolute -top-2 -right-2
                                    bg-black text-white
                                    text-[10px] font-semibold
                                    w-4 h-4 rounded-full
-                                   flex items-center justify-center">
+                                   flex items-center justify-center"
+                  >
                     {cartCount}
                   </span>
                 )}
@@ -115,11 +113,13 @@ const Navbar = () => {
               <Link to="/my-orders" className="relative hover:text-black">
                 <FiPackage size={20} />
                 {orderCount > 0 && (
-                  <span className="absolute -top-2 -right-2
+                  <span
+                    className="absolute -top-2 -right-2
                                    bg-black text-white
                                    text-[10px] font-semibold
                                    w-4 h-4 rounded-full
-                                   flex items-center justify-center">
+                                   flex items-center justify-center"
+                  >
                     {orderCount}
                   </span>
                 )}
@@ -143,6 +143,9 @@ const Navbar = () => {
             <>
               <Link to="/seller-dashboard" className="hover:text-black">
                 <FiBox size={20} />
+              </Link>
+              <Link to="/seller-products" className="hover:text-black">
+                <FiLayers size={20} />
               </Link>
 
               <Link to="/seller-orders" className="hover:text-black">
