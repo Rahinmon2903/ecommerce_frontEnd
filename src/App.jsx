@@ -80,7 +80,7 @@ const App = () => {
             }
           />
           <Route
-            path="/seller-Orders"
+            path="/seller-orders"
             element={
               <ProtectedRoute role="seller">
                 <SellerOrders />
@@ -88,7 +88,7 @@ const App = () => {
             }
           />
           <Route
-            path="/my-Orders"
+            path="/my-orders"
             element={
               <ProtectedRoute role="buyer">
                 <MyOrders />
