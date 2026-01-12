@@ -8,31 +8,26 @@ const SellerProducts = () => {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(null);
 
-  const auth = JSON.parse(localStorage.getItem("auth"));
-  const sellerId = auth?.user?.id;
-
-  /*  FETCH SELLER PRODUCTS  */
-  const fetchProducts = async () => {
+  /* ---------------- FETCH SELLER PRODUCTS ---------------- */
+  const fetchSellerProducts = async () => {
     try {
-      const res = await api.get("/products/getdata");
-
-      const sellerProducts = res.data.products.filter(
-        (p) => p.seller === sellerId
+      const res = await api.get("/products/seller");
+      setProducts(res.data.products || []);
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to load your products"
       );
-
-      setProducts(sellerProducts);
-    } catch {
-      toast.error("Failed to load products");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchProducts();
+    fetchSellerProducts();
   }, []);
 
-  /*  DELETE PRODUCT  */
+  /* ---------------- DELETE PRODUCT ---------------- */
   const deleteProduct = async (id) => {
     if (!window.confirm("Are you sure you want to delete this product?"))
       return;
@@ -46,13 +41,21 @@ const SellerProducts = () => {
     }
   };
 
-  /*  UPDATE PRODUCT  */
+  /* ---------------- UPDATE PRODUCT ---------------- */
   const updateProduct = async () => {
     try {
-      await api.put(`/products/update/${editing._id}`, editing);
+      await api.put(`/products/update/${editing._id}`, {
+        name: editing.name,
+        description: editing.description,
+        price: Number(editing.price),
+        stock: Number(editing.stock),
+        category: editing.category,
+      });
 
       setProducts((prev) =>
-        prev.map((p) => (p._id === editing._id ? editing : p))
+        prev.map((p) =>
+          p._id === editing._id ? editing : p
+        )
       );
 
       toast.success("Product updated");
@@ -73,7 +76,6 @@ const SellerProducts = () => {
   return (
     <div className="bg-[#FAFAFA] min-h-screen">
       <div className="max-w-6xl mx-auto px-6 py-14">
-
         <h1 className="text-2xl font-semibold mb-10">
           My Products
         </h1>
@@ -87,8 +89,7 @@ const SellerProducts = () => {
             {products.map((p) => (
               <div
                 key={p._id}
-                className="bg-white rounded-2xl p-6
-                           shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
+                className="bg-white rounded-2xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
               >
                 <img
                   src={p.images?.[0] || "https://via.placeholder.com/300"}
@@ -140,7 +141,6 @@ const SellerProducts = () => {
                 onChange={(e) =>
                   setEditing({ ...editing, name: e.target.value })
                 }
-                placeholder="Product name"
                 className="w-full border-b py-2 text-sm outline-none"
               />
 
@@ -149,7 +149,6 @@ const SellerProducts = () => {
                 onChange={(e) =>
                   setEditing({ ...editing, description: e.target.value })
                 }
-                placeholder="Description"
                 rows={3}
                 className="w-full border-b py-2 text-sm outline-none"
               />
@@ -161,7 +160,6 @@ const SellerProducts = () => {
                   onChange={(e) =>
                     setEditing({ ...editing, price: e.target.value })
                   }
-                  placeholder="Price"
                   className="border-b py-2 text-sm outline-none"
                 />
 
@@ -171,7 +169,6 @@ const SellerProducts = () => {
                   onChange={(e) =>
                     setEditing({ ...editing, stock: e.target.value })
                   }
-                  placeholder="Stock"
                   className="border-b py-2 text-sm outline-none"
                 />
               </div>
@@ -181,7 +178,6 @@ const SellerProducts = () => {
                 onChange={(e) =>
                   setEditing({ ...editing, category: e.target.value })
                 }
-                placeholder="Category"
                 className="w-full border-b py-2 text-sm outline-none"
               />
             </div>
