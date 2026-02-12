@@ -4,9 +4,10 @@ import ProductCard from "../Components/ProductCard";
 import { toast } from "react-toastify";
 
 const ProductList = () => {
+  //to get data from api
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
+//for filtering in front-end
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("default");
 
@@ -17,6 +18,7 @@ const ProductList = () => {
   const fetchProducts = async () => {
     try {
       const res = await api.get("/products/getdata");
+      //getting the products array from backend and display using map function
       setProducts(res.data.products || []);
     } catch (error) {
       const msg =
@@ -35,6 +37,7 @@ const ProductList = () => {
     let list = [...products];
     
     //filters
+    //only when search is not empty the filter will be applied
     if (search) {
       list = list.filter((p) =>
         p.name.toLowerCase().includes(search.toLowerCase())
