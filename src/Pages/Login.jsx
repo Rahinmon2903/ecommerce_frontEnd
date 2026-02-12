@@ -14,8 +14,29 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      //there we are sendind form instead of ...form because form is already like this { email: "", password: "" }
+      //but in register-buyer or seller we need to send the role also  which makes form like this 
+      /*
+      {
+  "form": {
+    "name": "Rahin",
+    "email": "abc@gmail.com",
+    "password": "123456"
+  },
+  "role": "buyer"
+}
+  so only we use ...form which makes it
+  {
+  "name": "Rahin",
+  "email": "abc@gmail.com",
+  "password": "123456",
+  "role": "buyer"
+}
+  */
+
       const res = await api.post("/auth/login", form);
       localStorage.setItem("auth", JSON.stringify(res.data));
+      //conditional rendering
       navigate(res.data.user.role === "buyer" ? "/products" : "/seller-dashboard");
     } catch {
      const msg =
@@ -44,6 +65,7 @@ const Login = () => {
             <input
               name="email"
               placeholder="Email"
+              value={form.email}
               onChange={handleChange}
               className="w-full border-b py-2 text-sm focus:outline-none"
             />
@@ -51,6 +73,7 @@ const Login = () => {
             <input
               name="password"
               type="password"
+              value={form.password}
               placeholder="Password"
               onChange={handleChange}
               className="w-full border-b py-2 text-sm focus:outline-none"
