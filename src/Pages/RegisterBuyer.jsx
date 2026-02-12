@@ -22,6 +22,45 @@ const RegisterBuyer = () => {
         ...form,
         role: "buyer",
       });
+      /*
+      await api.post("/auth/register", {
+  ...form,
+  role: "buyer"
+});
+Payload becomes:
+
+{
+  "name": "Rahin",
+  "email": "abc@gmail.com",
+  "password": "123456",
+  "role": "buyer"
+}
+  so we can aceess it req.body=email etc otherwise
+  await api.post("/auth/register", {
+  form,
+  role: "buyer"
+});
+Payload becomes:
+
+{
+  "form": {
+    "name": "Rahin",
+    "email": "abc@gmail.com",
+    "password": "123456"
+  },
+  "role": "buyer"
+}
+⚠ Notice structure:
+
+Everything is nested inside "form".
+
+Your backend would need:
+
+req.body.form.email
+instead of:
+
+req.body.email
+  */
       navigate("/login");
     } catch (error) {
         const msg =
