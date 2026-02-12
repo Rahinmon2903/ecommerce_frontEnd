@@ -5,6 +5,7 @@ import AuthSlider from "../Components/AuthSlider";
 import { toast } from "react-toastify";
 
 const ResetPassword = () => {
+  //sending the token from front end to backend api son they can use it and compare
   const { token } = useParams();
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
@@ -52,6 +53,7 @@ const ResetPassword = () => {
             <input
               type="password"
               placeholder="New password"
+              value={password}
               required
               onChange={(e) => setPassword(e.target.value)}
               className="w-full border-b border-gray-300 bg-transparent
