@@ -57,6 +57,7 @@ const RegisterSeller = () => {
             <input
               name="name"
               placeholder="Business or seller name"
+              value={form.name}
               onChange={handleChange}
               required
               className="w-full border-b border-gray-300 bg-transparent
@@ -71,6 +72,7 @@ const RegisterSeller = () => {
               name="email"
               type="email"
               placeholder="Email address"
+              value={form.email}
               onChange={handleChange}
               required
               className="w-full border-b border-gray-300 bg-transparent
@@ -85,6 +87,7 @@ const RegisterSeller = () => {
               name="password"
               type="password"
               placeholder="Password"
+              value={form.password}
               onChange={handleChange}
               required
               className="w-full border-b border-gray-300 bg-transparent
