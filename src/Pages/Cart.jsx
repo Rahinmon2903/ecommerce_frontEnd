@@ -92,7 +92,7 @@ const Cart = () => {
       </div>
     );
   }
-
+//the products which has id that can only be displayed
   const items = cart.products.filter((i) => i.productId);
 
   const total = items.reduce(
@@ -114,6 +114,7 @@ const Cart = () => {
           {/* ITEMS */}
           <div className="lg:col-span-2 space-y-6">
             {items.map((item) => {
+              //get the product by id so we can display image of a particular product
               const product = item.productId;
               const disabled = updatingId === product._id;
 
