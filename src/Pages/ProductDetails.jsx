@@ -79,7 +79,7 @@ const ProductDetails = () => {
         rating,
         comment,
       });
-
+  //so once the user added the review it will be immeadiately visible on UI
       setProduct({ ...product, reviews: res.data.reviews });
       setComment("");
       setRating(5);
@@ -215,6 +215,7 @@ const ProductDetails = () => {
               You’ve already reviewed this product.
             </p>
           )}
+          {/*if the role is buyer and user is not reviewed it yet*/}
 
           {isBuyer && !alreadyReviewed && (
             <div className="mb-12 space-y-4">
@@ -248,7 +249,7 @@ const ProductDetails = () => {
               </button>
             </div>
           )}
-
+{/*to display the reviews which is given by other users*/}
           {product.reviews?.length ? (
             <div className="space-y-6">
               {product.reviews.map((r, i) => (
