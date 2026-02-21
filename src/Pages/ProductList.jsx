@@ -4,10 +4,9 @@ import ProductCard from "../Components/ProductCard";
 import { toast } from "react-toastify";
 
 const ProductList = () => {
-  //to get data from api
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-//for filtering in front-end
+
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("default");
 
@@ -18,32 +17,28 @@ const ProductList = () => {
   const fetchProducts = async () => {
     try {
       const res = await api.get("/products/getdata");
-      //getting the products array from backend and display using map function
       setProducts(res.data.products || []);
     } catch (error) {
       const msg =
-                error.response?.data?.message ||
-                error.message ||
-                "Something went wrong";
-            
-              toast.error(msg);
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
   };
 
   const filteredProducts = useMemo(() => {
-    //coping the array
     let list = [...products];
-    
-    //filters
-    //only when search is not empty the filter will be applied
+
     if (search) {
       list = list.filter((p) =>
         p.name.toLowerCase().includes(search.toLowerCase())
       );
     }
-    //sort
+
     if (sort === "price-low") list.sort((a, b) => a.price - b.price);
     if (sort === "price-high") list.sort((a, b) => b.price - a.price);
 
@@ -68,29 +63,35 @@ const ProductList = () => {
             Handpicked items from verified sellers — built for quality,
             priced for everyday value.
           </p>
+        </div>
+      </section>
 
-          {/* Controls */}
-          <div className="mt-10 flex flex-col sm:flex-row gap-4">
-            <input
-              type="text"
-              placeholder="Search products…"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full sm:w-80 rounded-xl px-4 py-3 text-sm
-                         text-black focus:outline-none"
-            />
+      {/* CONTROLS */}
+      <section className="bg-white border-b">
+        <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row gap-4">
 
-            <select
-              value={sort}
-              onChange={(e) => setSort(e.target.value)}
-              className="w-48 rounded-xl px-4 py-3 text-sm
-                         text-black focus:outline-none"
-            >
-              <option value="default">Sort</option>
-              <option value="price-low">Price: Low → High</option>
-              <option value="price-high">Price: High → Low</option>
-            </select>
-          </div>
+          <input
+            type="text"
+            placeholder="Search products…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full sm:w-80 rounded-xl px-4 py-3 text-sm
+                       border border-gray-200
+                       focus:outline-none focus:ring-2 focus:ring-black"
+          />
+
+          <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+            className="w-48 rounded-xl px-4 py-3 text-sm
+                       border border-gray-200
+                       focus:outline-none focus:ring-2 focus:ring-black"
+          >
+            <option value="default">Sort</option>
+            <option value="price-low">Price: Low → High</option>
+            <option value="price-high">Price: High → Low</option>
+          </select>
+
         </div>
       </section>
 
@@ -113,4 +114,3 @@ const ProductList = () => {
 };
 
 export default ProductList;
-
