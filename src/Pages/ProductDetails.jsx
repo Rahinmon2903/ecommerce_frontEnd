@@ -66,9 +66,9 @@ const ProductDetails = () => {
   };
 
   // -------- REVIEWS --------
-  const alreadyReviewed = product?.reviews?.some(
-    (r) => r.user === userId
-  );
+const alreadyReviewed = product?.reviews?.some(
+  (r) => r.user.toString() === userId
+);
 
   const submitReview = async () => {
     if (!comment) return alert("Write a review");
@@ -197,7 +197,7 @@ const ProductDetails = () => {
                   onClick={() => setShowMore(!showMore)}
                   className="mt-3 text-sm underline text-gray-900"
                 >
-                  {showMore ? "Show less" : "Read more"}
+                  {showMore ? "Show less" : "Read more"}//
                 </button>
               )}
             </div>
