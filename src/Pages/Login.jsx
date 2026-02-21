@@ -38,7 +38,7 @@ const Login = () => {
       localStorage.setItem("auth", JSON.stringify(res.data));
       //conditional rendering
       navigate(res.data.user.role === "buyer" ? "/products" : "/seller-dashboard");
-    } catch {
+    } catch(error){ 
      const msg =
                error.response?.data?.message ||
                error.message ||
