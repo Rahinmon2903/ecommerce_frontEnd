@@ -168,7 +168,33 @@ const Checkout = () => {
             {/* SHIPPING */}
             <div className="bg-white rounded-2xl p-7 shadow space-y-4">
               <h2 className="text-lg font-medium">Shipping Address</h2>
+{/* instead of these object entry we can use
+import { useState } from "react";
 
+const ExampleForm = () => {
+  const [shipping, setShipping] = useState({
+    fullName: "",
+  });
+
+  const handleChange = (e) => {
+    setShipping({
+      ...shipping,
+      fullName: e.target.value,
+    });
+  };
+
+  return (
+    <div>
+      <input
+        placeholder="Full Name"
+        value={shipping.fullName}
+        onChange={handleChange}
+      />
+    </div>
+  );
+};
+
+export default ExampleForm; */}
               {Object.keys(shipping).map((key) => (
                 <input
                   key={key}

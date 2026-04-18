@@ -162,9 +162,11 @@ const SellerDashboard = () => {
                 multiple
                 accept="image/*"
                 className="hidden"
+                    /*intinally it is not a array when we do Array.from which converts it into a array */
                 onChange={(e) =>
                   setForm({
                     ...form,
+                
                     images: Array.from(e.target.files),
                   })
                 }
