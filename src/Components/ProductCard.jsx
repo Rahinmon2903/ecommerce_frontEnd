@@ -64,7 +64,7 @@ const ProductCard = ({ product }) => {
                      disabled:opacity-60"
         >
           <img
-            src={wishAdded ?  wishlistOutline : wishlistFilled}
+            src={wishAdded ? wishlistFilled : wishlistOutline}
             alt="Wishlist"
             className="w-5 h-5"
           />
