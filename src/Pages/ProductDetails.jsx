@@ -197,7 +197,7 @@ const alreadyReviewed = product?.reviews?.some(
                   onClick={() => setShowMore(!showMore)}
                   className="mt-3 text-sm underline text-gray-900"
                 >
-                  {showMore ? "Show less" : "Read more"}//
+                  {showMore ? "Show less" : "Read more"}
                 </button>
               )}
             </div>
