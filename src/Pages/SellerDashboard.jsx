@@ -199,6 +199,8 @@ const SellerDashboard = () => {
                     >
                       <img
                         src={URL.createObjectURL(file)}
+                        //It creates a temporary local URL for a file (image, video, etc.)
+                        //createObjectURL is used to convert a file to a url
                         alt="preview"
                         className="w-full h-full object-cover"
                       />
