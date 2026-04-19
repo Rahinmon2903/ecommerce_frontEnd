@@ -168,6 +168,7 @@ const SellerDashboard = () => {
                     ...form,
                 
                     images: Array.from(e.target.files),
+                    //“We use Array.from because FileList is not a proper array”
                   })
                 }
               />
